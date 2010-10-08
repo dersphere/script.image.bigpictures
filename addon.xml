@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.image.bigpictures" name="The Big Picture" version="1.2.0" provider-name="sphere, rwparris2">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+    <import addon="script.module.beautifulsoup" version="3.0.8"/>
+  </requires>
+  <extension point="xbmc.python.script" library="runscript.py">
+    <provides>image</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="de"></summary>
+    <summary lang="en">Addon for Boston.com's photojournalism site, The Big Picture</summary>
+    <description lang="de">Erweiterung für Boston.com's Bildberichterstattungs Seite, The Big Pictures</description>
+    <description lang="en">Addon for Boston.com's photojournalism site, The Big Picture</description>
+  </extension>
+</addon>
