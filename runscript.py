@@ -1,6 +1,5 @@
 import os
 import sys
-#import default
 
 # Script constants
 __scriptname__ = 'The Big Picture'
@@ -14,5 +13,4 @@ if (__name__ == '__main__'):
     ui = gui.GUI( 'main.xml', os.getcwd(), 'default' )
     ui.doModal()
     del ui
-
     sys.modules.clear()

@@ -9,9 +9,9 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="de"></summary>
-    <summary lang="en">Addon for Boston.com's photojournalism site, The Big Picture</summary>
-    <description lang="de">Erweiterung für Boston.com's Bildberichterstattungs Seite, The Big Pictures</description>
-    <description lang="en">Addon for Boston.com's photojournalism site, The Big Picture</description>
+    <summary lang="de">Zeigt Alben/Bilder von Boston.com's Seite "The Big Pictures"</summary>
+    <summary lang="en">Shows Albums/Pictures from Boston.com's photojournalism site</summary>
+    <description lang="de">Das Album kann mit links und rechts gewählt werden.[CR]Mit select wird das Album geöffnet.[CR]Herunterladen der Bilder ist mit der Kontext-Menu Taste möglich.</description>
+    <description lang="en">You can switch the album with left and right.[CR]With select-key you can enter the album to view its content.[CR]Picture Downloading is possible with the context menu key.</description>
   </extension>
 </addon>
