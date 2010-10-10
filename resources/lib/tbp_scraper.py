@@ -76,5 +76,7 @@ class TBP:
         photoNodes = tree.findAll('div', {'class': re.compile('bpImageTop|bpBoth')})
         for node in photoNodes:
             pic = node.img['src']
+            if node.find('div', 'photoNum'):
+                node.find('div', 'photoNum').replaceWith('')
             description = self.cleanHTML(node.find('div', 'bpCaption'))
             self.photos.append({'title': title, 'pic': pic, 'description': description})
