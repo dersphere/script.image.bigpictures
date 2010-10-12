@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 scriptName = sys.modules['__main__'].__scriptname__
 
 
-class BOSTON_COM:
+class TBP:
 
     def getHTML(self, url, headers = [('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14')]):
         """Returns HTML from a given URL"""
@@ -66,7 +66,7 @@ class BOSTON_COM:
             link = node.find('a')['href']
             description = self.cleanHTML(node.find('div', attrs={'class': 'bpBody'}).contents)
             pic = node.find('img')['src']
-            self.albums.append({'title': title, 'pic': pic, 'description': description, 'link': link, 'source' : 'boston_com'})
+            self.albums.append({'title': title, 'pic': pic, 'description': description, 'link': link})
 
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
