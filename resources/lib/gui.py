@@ -10,11 +10,19 @@ Addon = xbmcaddon.Addon(_id)
 #enable localization
 getLS = Addon.getLocalizedString
 
+sites = list()
+sites.append({'title': 'Boston.com The Big Pictures',
+              'pic': 'http://cache.boston.com/universal/site_graphics/blogs/bigpicture/bp_header_e.jpg',
+              'description': 'News Stories in photograps',
+              'link': 'http://www.boston.com/bigpicture/',
+              'source': 'boston_com'})
+sites.append({'title': 'Boston.com Big Shots',
+              'pic': 'http://graphics.boston.com/universal/site_graphics/blogs/bigpicture/bigShots.gif',
+              'description': 'The best sports photograpy of the week',
+              'link': 'http://www.boston.com/sports/blogs/bigshots/',
+              'source': 'boston_com'})
 
 class GUI(xbmcgui.WindowXML):
-    #BASE URL(S)
-    BIGSHOTSHOME = 'http://www.boston.com/sports/blogs/bigshots/'
-    TBPHOME = 'http://www.boston.com/bigpicture/'
     #Label Controls
     CONTROL_MAIN_IMAGE = 100
     CONTROL_USAGE_TEXT = 3
@@ -27,14 +35,14 @@ class GUI(xbmcgui.WindowXML):
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-        self.tbp = tbp_scraper.TBP()
+        self.boston_com = tbp_scraper.BOSTON_COM()
 
     def onInit(self):
         self.getControl(1).setLabel(getLS(32000))
         self.getControl(2).setLabel(getLS(32001))
         self.getControl(self.CONTROL_USAGE_TEXT).setText('\n'.join([getLS(32030), getLS(32031)]))
-        self.showAlbums(self.TBPHOME)
-
+        self.showSites()
+        
     def onFocus(self, controlId):
         pass
 
@@ -45,17 +53,22 @@ class GUI(xbmcgui.WindowXML):
             self.download()
         elif action in self.ACTION_PREVIOUS_MENU:
             # exit the script
-            if self.getProperty('type') == 'album':
+            if self.getProperty('type') == 'site':
                 self.close()
-            # return to previous album
+            # return to sites view
+            elif self.getProperty('type') == 'album':
+                self.showSites()
+            # return to album view
             elif self.getProperty('type') == 'photo':
-                self.showAlbums(self.TBPHOME)
+                self.showSites() #fixme, return from where you come from
         elif action in self.ACTION_EXIT_SCRIPT:
             self.close()
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
-            if self.getProperty('type') == 'album':
+            if self.getProperty('type') == 'site':
+                self.showAlbums()
+            elif self.getProperty('type') == 'album':
                 self.showPhotos()
             elif self.getProperty('type') == 'photo':
                 self.toggleInfo()
@@ -88,23 +101,39 @@ class GUI(xbmcgui.WindowXML):
                 pDialog = xbmcgui.DialogProgress() #show useless dialog so user knows something is happening.
                 pDialog.create(getLS(32000))
                 pDialog.update(50)
-                self.tbp.getPhotos(self.getProperty('link'))
+                self.boston_com.getPhotos(self.getProperty('link'))
                 pDialog.update(100)
                 pDialog.close()
-                imageDownloader.Download(self.tbp.photos, downloadPath)
+                imageDownloader.Download(self.boston_com.photos, downloadPath)
 
     def showPhotos(self): #the order is significant!
         link = self.getProperty('link')
+        source = self.getProperty('source')
         self.getControl(self.CONTROL_MAIN_IMAGE).reset() #Clear the old list of albums.
         self.getControl(self.CONTROL_USAGE_TEXT).setVisible(False)
-        self.tbp.getPhotos(link) # Get a list of photos from the link.
-        self.showItems(self.tbp.photos, 'photo')
+        if source == 'boston_com':
+            self.boston_com.getPhotos(link) # Get a list of photos from the link.
+            photos = self.boston_com.photos
+        elif source == 'another source which provides a list of photos':
+            pass
+        self.showItems(photos, 'photo')
 
-    def showAlbums(self, albumUrl):
+    def showAlbums(self):
+        albumUrl = self.getProperty('link')
+        source = self.getProperty('source')
         self.getControl(self.CONTROL_MAIN_IMAGE).reset() #This is necessary when returning from photos.
+        self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)    
+        if source == 'boston_com':
+            self.boston_com.getAlbums(albumUrl)
+            albums = self.boston_com.albums
+        elif source == 'another source which provides a list of albums':
+            pass
+        self.showItems(albums, 'album')
+
+    def showSites(self):
+        self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)
-        self.tbp.getAlbums(albumUrl)
-        self.showItems(self.tbp.albums, 'album')
+        self.showItems(sites, 'site')
 
     def showItems(self, itemSet, type):
         total = len(itemSet)
