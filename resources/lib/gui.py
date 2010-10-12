@@ -10,18 +10,6 @@ Addon = xbmcaddon.Addon(_id)
 #enable localization
 getLS = Addon.getLocalizedString
 
-sites = list()
-sites.append({'title': 'Boston.com The Big Pictures',
-              'pic': 'http://cache.boston.com/universal/site_graphics/blogs/bigpicture/bp_header_e.jpg',
-              'description': 'News Stories in photograps',
-              'link': 'http://www.boston.com/bigpicture/',
-              'source': 'boston_com'})
-sites.append({'title': 'Boston.com Big Shots',
-              'pic': 'http://graphics.boston.com/universal/site_graphics/blogs/bigpicture/bigShots.gif',
-              'description': 'The best sports photograpy of the week',
-              'link': 'http://www.boston.com/sports/blogs/bigshots/',
-              'source': 'boston_com'})
-
 class GUI(xbmcgui.WindowXML):
     #Label Controls
     CONTROL_MAIN_IMAGE = 100
@@ -133,7 +121,8 @@ class GUI(xbmcgui.WindowXML):
     def showSites(self):
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)
-        self.showItems(sites, 'site')
+        self.getSites()
+        self.showItems(self.sites, 'site')
 
     def showItems(self, itemSet, type):
         total = len(itemSet)
@@ -148,3 +137,28 @@ class GUI(xbmcgui.WindowXML):
         for p in properties.keys():
             li.setProperty(p, properties[p])
         self.getControl(controlId).addItem(li)
+
+    def getSites(self):
+        """creates an ordered list sites = [{title, preview1, preview2, preview3, pic, description, link, source}, ...]"""
+        self.sites = list()
+        #boston_com The Big Pictures
+        self.boston_com.getAlbums('http://www.boston.com/bigpicture/')
+        self.sites.append({'title': 'Boston.com The Big Pictures',
+                           'preview1': self.boston_com.albums[0]['pic'],
+                           'preview2': self.boston_com.albums[1]['pic'],
+                           'preview3': self.boston_com.albums[2]['pic'],
+                           'pic': '',
+                           'description': 'News Stories in photograps',
+                           'link': 'http://www.boston.com/bigpicture/',
+                           'source': 'boston_com'})
+        #boston_com Big Shots
+        self.boston_com.getAlbums('http://www.boston.com/sports/blogs/bigshots/')
+        self.sites.append({'title': 'Boston.com Big Shots',
+                           'preview1': self.boston_com.albums[0]['pic'],
+                           'preview2': self.boston_com.albums[1]['pic'],
+                           'preview3': self.boston_com.albums[2]['pic'],
+                           'pic': '',
+                           'description': 'The best sports photograpy of the week',
+                           'link': 'http://www.boston.com/sports/blogs/bigshots/',
+                           'source': 'boston_com'})
+

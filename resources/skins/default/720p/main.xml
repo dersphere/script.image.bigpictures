@@ -48,6 +48,36 @@
                 <preloaditems>5</preloaditems>
                 <itemlayout width="1280" height="720">
                     <control type="image">
+                        <!--The Preview Pic1-->
+                        <posx>265</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview1)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
+                    <control type="image">
+                        <!--The Preview Pic2-->
+                        <posx>515</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview2)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
+                    <control type="image">
+                        <!--The Preview Pic3-->
+                        <posx>765</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview3)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
+                    <control type="image">
                         <!--The Picture-->
                         <posx>0</posx>
                         <posy>0</posy>
@@ -81,6 +111,36 @@
                     </control>
                 </itemlayout>
                 <focusedlayout width="1280" height="720">
+                    <control type="image">
+                        <!--The Preview Pic1-->
+                        <posx>265</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview1)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
+                    <control type="image">
+                        <!--The Preview Pic2-->
+                        <posx>515</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview2)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
+                    <control type="image">
+                        <!--The Preview Pic3-->
+                        <posx>765</posx>
+                        <posy>260</posy>
+                        <width>250</width>
+                        <height>200</height>
+                        <fadetime>200</fadetime>
+                        <texture>$INFO[ListItem.Property(Preview3)]</texture>
+                        <aspectratio>scale</aspectratio>
+                    </control>
                     <control type="image">
                         <!--the picture-->
                         <posx>0</posx>
