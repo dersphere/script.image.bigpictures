@@ -1,4 +1,5 @@
 import tbp_scraper
+import sbb_scraper
 import xbmcgui
 import os
 import imageDownloader
@@ -29,10 +30,12 @@ class GUI(xbmcgui.WindowXML):
     SOURCES = list()
     SOURCES.append({'name': 'The Big Picture', 'object': 'tbp', 'url': 'http://www.boston.com/bigpicture/'})
     SOURCES.append({'name': 'The Big Shot', 'object': 'tbp', 'url': 'http://www.boston.com/sports/blogs/bigshots/'})
+    SOURCES.append({'name': 'SacBee The Frame', 'object': 'sbb', 'url': 'http://blogs.sacbee.com/photos/'})
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
         self.tbp = tbp_scraper.TBP()
+        self.sbb = sbb_scraper.SBB()
 
     def onInit(self):
         self.getControl(1).setLabel(getLS(32000))
@@ -121,6 +124,9 @@ class GUI(xbmcgui.WindowXML):
         if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
             self.tbp.getPhotos(link) # Get a list of photos from the link.
             photos = self.tbp.photos
+        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
+            self.sbb.getPhotos(link)
+            photos = self.sbb.photos
         else:
             pass
         self.showItems(photos, 'photo')
@@ -131,6 +137,9 @@ class GUI(xbmcgui.WindowXML):
         if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
             self.tbp.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
             albums = self.tbp.albums
+        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
+            self.sbb.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
+            albums = self.sbb.albums
         else:
             pass
         self.showItems(albums, 'album')
