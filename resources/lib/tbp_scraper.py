@@ -40,6 +40,7 @@ class TBP:
         s = re.sub('\s+', ' ', s) #remove extra spaces
         s = re.sub('<.+?>|Image:.+?\r|\r', '', s) #remove htmltags, image captions, & newlines
         s = s.replace('&#39;', '\'') #replace html-encoded double-quotes
+        s = re.sub('#$', '', s) #remove hash at the end
         s = s.strip()
         return s
 
@@ -78,5 +79,5 @@ class TBP:
             pic = node.img['src']
             if node.find('div', 'photoNum'):
                 node.find('div', 'photoNum').replaceWith('')
-            description = self.cleanHTML(node.find('div', 'bpCaption'))
+            description = self.cleanHTML(node.find('div', 'bpCaption').contents)
             self.photos.append({'title': title, 'pic': pic, 'description': description})

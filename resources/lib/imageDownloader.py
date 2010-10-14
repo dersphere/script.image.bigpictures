@@ -17,7 +17,7 @@ class Download:
     def __init__(self, photos, downloadPath):
         self.len = str(len(photos))
         self.pDialog = xbmcgui.DialogProgress()
-        self.pDialog.create(getLS(32000))
+        self.pDialog.create('')
         downloadPath = xbmc.translatePath(downloadPath)
 
         for i, photo in enumerate(photos):

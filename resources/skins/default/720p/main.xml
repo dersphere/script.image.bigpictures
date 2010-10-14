@@ -24,7 +24,7 @@
                 <height>100</height>
                 <align>left</align>
                 <aligny>top</aligny>
-                <label>32000</label>
+                <label></label>
                 <textcolor>FFAAAAAA</textcolor>
             </control>
             <control type="label" id="2">
