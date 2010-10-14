@@ -54,20 +54,20 @@ class WSJ:
             title = self.cleanHTML(node.find('h2').a.string)
             link = node.find('h2').a['href']
             description = self.cleanHTML(node.findAll('div', attrs={'class': 'postContent'})[1].p)
-            pic = node.find('img')['src']
+            pic = node.find('img')['src'].strip()
             self.albums.append({'title': title, 'pic': pic, 'description': description, 'link': link})
 
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
         tree = BeautifulSoup(self.getHTML(url))
-        title = tree.find('div', 'wrap padding-left-big').h1.string
+        title = tree.find('div', 'articleHeadlineBox headlineType-newswire').h1.string
         try: (len(self.photos))
         except: self.photos = list()
         subtree = tree.find('div', {'class': 'articlePage'})
         subtree.extract()
         photoNodes = subtree.findAll('p')
         for node in photoNodes:
-            pic = node.img['src']
+            pic = node.img['src'].strip()
             description = self.cleanHTML(node.contents)
             self.photos.append({'title': title, 'pic': pic, 'description': description})
         if tree.find('a', 'nav_next'):

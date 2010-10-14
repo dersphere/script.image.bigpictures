@@ -1,11 +1,12 @@
+import os
+
+import xbmcgui
+import imageDownloader
+import xbmcaddon
+
 import tbp_scraper
 import sbb_scraper
 import wsj_scraper
-import xbmcgui
-import os
-import imageDownloader
-import xbmcaddon
-from xbmc import sleep
 
 _id = os.path.basename(os.getcwd())
 Addon = xbmcaddon.Addon(_id)
@@ -32,7 +33,7 @@ class GUI(xbmcgui.WindowXML):
     SOURCES.append({'name': 'Boston.com: The Big Picture', 'object': 'tbp', 'url': 'http://www.boston.com/bigpicture/'})
     SOURCES.append({'name': 'Boston.com: The Big Shot', 'object': 'tbp', 'url': 'http://www.boston.com/sports/blogs/bigshots/'})
     SOURCES.append({'name': 'Sacramento Bee: The Frame', 'object': 'sbb', 'url': 'http://blogs.sacbee.com/photos/'})
-    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal', 'object': 'wsj', 'url': 'http://blogs.wsj.com/photojournal/'})
+    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal', 'object': 'wsj', 'url': 'http://blogs.wsj.com/photojournal/category/pictures-of-the-week/'})
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
@@ -69,7 +70,7 @@ class GUI(xbmcgui.WindowXML):
             self.showAlbums()
         elif action in self.ACTION_UP and self.getProperty('type') == 'album':
             if self.ACTIVESOURCE == 0:
-                self.ACTIVESOURCE = len(self.SOURCES) -1
+                self.ACTIVESOURCE = len(self.SOURCES) - 1
             else:
                 self.ACTIVESOURCE -= 1
             self.showAlbums()
@@ -98,28 +99,27 @@ class GUI(xbmcgui.WindowXML):
 
     def download(self):
         #get writable directory
-        if self.getProperty('type') == 'photo':
-            downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020), getLS(32021)]), 'pictures')
-            if downloadPath:
-                photos = [{'pic':self.getProperty('pic')}] #url needs to be passed as a dict in a list.
+        downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020), getLS(32022)]), 'pictures')
+        if downloadPath:
+            if self.getProperty('type') == 'photo':
+                photos = [{'pic':self.getProperty('pic'), 'title': ''}] #url needs to be passed as a dict in a list.
                 imageDownloader.Download(photos, downloadPath) 
-        elif self.getProperty('type') == 'album':
-            downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020), getLS(32022)]), 'pictures')
-            if downloadPath:
+            elif self.getProperty('type') == 'album':
                 pDialog = xbmcgui.DialogProgress() #show useless dialog so user knows something is happening.
                 pDialog.create(self.SOURCES[self.ACTIVESOURCE]['name'])
+                link = self.getProperty('link')
                 pDialog.update(50)
                 if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-                    self.tbp.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url']) # Get a list of photos from the link.
+                    self.tbp.getPhotos(link) # Get a list of photos from the link.
                     photos = self.tbp.photos
                 elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-                    self.sbb.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url'])
+                    self.sbb.getPhotos(link)
                     photos = self.sbb.photos
                 elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
-                    self.wsj.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url'])
+                    self.wsj.getPhotos(link)
                     photos = self.wsj.photos
                 else:
-                    pass
+                    photos = {'title': '', 'pic': '', 'description': ''}
                 pDialog.update(100)
                 pDialog.close()
                 imageDownloader.Download(photos, downloadPath)
@@ -138,7 +138,7 @@ class GUI(xbmcgui.WindowXML):
             self.wsj.getPhotos(link)
             photos = self.wsj.photos
         else:
-            pass
+            photos = [{'title': '', 'pic': '', 'description': ''}]
         self.showItems(photos, 'photo')
 
     def showAlbums(self):
@@ -154,7 +154,7 @@ class GUI(xbmcgui.WindowXML):
             self.wsj.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
             albums = self.wsj.albums
         else:
-            pass
+            albums = [{'title': '', 'pic': '', 'description': '', 'link': ''}]
         self.showItems(albums, 'album')
 
     def showItems(self, itemSet, type):
