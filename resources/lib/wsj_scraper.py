@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 scriptName = sys.modules['__main__'].__scriptname__
 
 
-class SBB:
+class WSJ:
 
     def getHTML(self, url, headers = [('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14')]):
         """Returns HTML from a given URL"""
@@ -40,6 +40,8 @@ class SBB:
         s = re.sub('\s+', ' ', s) #remove extra spaces
         s = re.sub('<.+?>|Image:.+?\r|\r', '', s) #remove htmltags, image captions, & newlines
         s = s.replace('&#39;', '\'') #replace html-encoded double-quotes
+        s = s.replace('&#8217;', '\'') #replace html-encoded double-quotes        
+        s = re.sub('#$', '', s) #remove hash at the end
         s = s.strip()
         return s
 
@@ -47,27 +49,26 @@ class SBB:
         """creates an ordered list albums = [{title, pic, description, link}, ...]"""
         tree = BeautifulSoup(self.getHTML(url))
         self.albums = list()
-        storyNodes = tree.findAll('div', 'entry-asset asset hentry story')
+        storyNodes = tree.findAll('li', 'postitem imageFormat-P')
         for node in storyNodes:
-            title = node.find('a').string
-            link = node.find('a')['href']
-            description = self.cleanHTML(node.find('div', attrs={'style': 'width: 980px; padding: 5px; text-align: left;'}).contents)
+            title = self.cleanHTML(node.find('h2').a.string)
+            link = node.find('h2').a['href']
+            description = self.cleanHTML(node.findAll('div', attrs={'class': 'postContent'})[1].p)
             pic = node.find('img')['src']
             self.albums.append({'title': title, 'pic': pic, 'description': description, 'link': link})
 
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
         tree = BeautifulSoup(self.getHTML(url))
-        title = tree.find('div', 'asset-name entry-title title').a.string
-        self.photos = list()
-        subtree_img = tree.findAll('div', attrs={'style': 'background: rgb(224, 224, 224); width: 982px; padding: 4px;'})
-        subtree_txt = tree.findAll('div', attrs={'style': 'background: rgb(224, 224, 224); width: 970px; padding: 10px;'})
-        # this is very dirty because this website is very dirty :(
-        for i, node_img in enumerate(subtree_img):
-            print i
-            pic = node_img.find('img')['src']
-            try:
-                description = self.cleanHTML(subtree_txt[i])
-            except:
-                description = ''
+        title = tree.find('div', 'wrap padding-left-big').h1.string
+        try: (len(self.photos))
+        except: self.photos = list()
+        subtree = tree.find('div', {'class': 'articlePage'})
+        subtree.extract()
+        photoNodes = subtree.findAll('p')
+        for node in photoNodes:
+            pic = node.img['src']
+            description = self.cleanHTML(node.contents)
             self.photos.append({'title': title, 'pic': pic, 'description': description})
+        if tree.find('a', 'nav_next'):
+            self.getPhotos(tree.find('a', 'nav_next')['href'])

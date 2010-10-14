@@ -1,5 +1,6 @@
 import tbp_scraper
 import sbb_scraper
+import wsj_scraper
 import xbmcgui
 import os
 import imageDownloader
@@ -28,14 +29,16 @@ class GUI(xbmcgui.WindowXML):
     ACTIVESOURCE = 0
     
     SOURCES = list()
-    SOURCES.append({'name': 'boston.com: The Big Picture', 'object': 'tbp', 'url': 'http://www.boston.com/bigpicture/'})
-    SOURCES.append({'name': 'boston.com: The Big Shot', 'object': 'tbp', 'url': 'http://www.boston.com/sports/blogs/bigshots/'})
-    SOURCES.append({'name': 'sacbee.com: The Frame', 'object': 'sbb', 'url': 'http://blogs.sacbee.com/photos/'})
+    SOURCES.append({'name': 'Boston.com: The Big Picture', 'object': 'tbp', 'url': 'http://www.boston.com/bigpicture/'})
+    SOURCES.append({'name': 'Boston.com: The Big Shot', 'object': 'tbp', 'url': 'http://www.boston.com/sports/blogs/bigshots/'})
+    SOURCES.append({'name': 'Sacramento Bee: The Frame', 'object': 'sbb', 'url': 'http://blogs.sacbee.com/photos/'})
+    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal', 'object': 'wsj', 'url': 'http://blogs.wsj.com/photojournal/'})
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
         self.tbp = tbp_scraper.TBP()
         self.sbb = sbb_scraper.SBB()
+        self.wsj = wsj_scraper.WSJ()
 
     def onInit(self):
         self.getControl(2).setLabel(getLS(32001)) #fixme
@@ -107,11 +110,14 @@ class GUI(xbmcgui.WindowXML):
                 pDialog.create(self.SOURCES[self.ACTIVESOURCE]['name'])
                 pDialog.update(50)
                 if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-                    self.tbp.getPhotos(link) # Get a list of photos from the link.
+                    self.tbp.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url']) # Get a list of photos from the link.
                     photos = self.tbp.photos
                 elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-                    self.sbb.getPhotos(link)
+                    self.sbb.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url'])
                     photos = self.sbb.photos
+                elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
+                    self.wsj.getPhotos(self.SOURCES[self.ACTIVESOURCE]['url'])
+                    photos = self.wsj.photos
                 else:
                     pass
                 pDialog.update(100)
@@ -128,6 +134,9 @@ class GUI(xbmcgui.WindowXML):
         elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
             self.sbb.getPhotos(link)
             photos = self.sbb.photos
+        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
+            self.wsj.getPhotos(link)
+            photos = self.wsj.photos
         else:
             pass
         self.showItems(photos, 'photo')
@@ -141,6 +150,9 @@ class GUI(xbmcgui.WindowXML):
         elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
             self.sbb.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
             albums = self.sbb.albums
+        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
+            self.wsj.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
+            albums = self.wsj.albums
         else:
             pass
         self.showItems(albums, 'album')
@@ -149,7 +161,7 @@ class GUI(xbmcgui.WindowXML):
         total = len(itemSet)
         for i, item in enumerate(itemSet):
             item['showInfo'] = 'true'
-            item['type'] = type #TODO move this to scraper?
+            item['type'] = type
             item['title'] = self.SOURCES[self.ACTIVESOURCE]['name'] + '\n' + item['title'] + ' (%s/%s)' % (i+1, total)
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
