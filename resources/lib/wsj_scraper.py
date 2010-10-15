@@ -40,8 +40,8 @@ class WSJ:
         s = re.sub('\s+', ' ', s) #remove extra spaces
         s = re.sub('<.+?>|Image:.+?\r|\r', '', s) #remove htmltags, image captions, & newlines
         s = s.replace('&#39;', '\'') #replace html-encoded double-quotes
-        s = s.replace('&#8217;', '\'') #replace html-encoded double-quotes        
-        s = re.sub('#$', '', s) #remove hash at the end
+        s = s.replace('&#8217;', '\'') #replace html-encoded single-quotes
+        s = s.replace('&#8221;', '"') #replace html-encoded double-quotes 
         s = s.strip()
         return s
 
@@ -57,12 +57,12 @@ class WSJ:
             pic = node.find('img')['src'].strip()
             self.albums.append({'title': title, 'pic': pic, 'description': description, 'link': link})
 
-    def getPhotos(self, url):
+    def getPhotos(self, url, append=False):
         """creates an ordered list photos = [{title, pic, description}, ...] """
         tree = BeautifulSoup(self.getHTML(url))
         title = tree.find('div', 'articleHeadlineBox headlineType-newswire').h1.string
-        try: (len(self.photos))
-        except: self.photos = list()
+        if not append:
+            self.photos = list()
         subtree = tree.find('div', {'class': 'articlePage'})
         subtree.extract()
         photoNodes = subtree.findAll('p')
@@ -71,4 +71,4 @@ class WSJ:
             description = self.cleanHTML(node.contents)
             self.photos.append({'title': title, 'pic': pic, 'description': description})
         if tree.find('a', 'nav_next'):
-            self.getPhotos(tree.find('a', 'nav_next')['href'])
+            self.getPhotos(tree.find('a', 'nav_next')['href'], append=True)
