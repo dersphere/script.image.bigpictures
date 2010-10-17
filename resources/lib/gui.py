@@ -17,7 +17,7 @@ getLS = Addon.getLocalizedString
 class GUI(xbmcgui.WindowXML):
     #Label Controls
     CONTROL_MAIN_IMAGE = 100
-    CONTROL_USAGE_TEXT = 3
+    CONTROL_USAGE_TEXT = 103
     #Label Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
@@ -42,7 +42,7 @@ class GUI(xbmcgui.WindowXML):
         self.wsj = wsj_scraper.WSJ()
 
     def onInit(self):
-        self.getControl(2).setLabel(getLS(32001)) #fixme
+        self.getControl(102).setLabel(getLS(32001)) #fixme
         self.showAlbums()
 
     def onFocus(self, controlId):
@@ -166,6 +166,7 @@ class GUI(xbmcgui.WindowXML):
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
     def addListItem(self, controlId, properties):
+        #print properties
         li = xbmcgui.ListItem(label=properties['title'], label2=properties['description'], iconImage=properties['pic'])
         for p in properties.keys():
             li.setProperty(p, properties[p])
