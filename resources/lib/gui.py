@@ -41,6 +41,7 @@ class GUI(xbmcgui.WindowXML):
         self.wsj = wsj_scraper.WSJ()
 
     def onInit(self):
+        self.showInfo = 'true'
         self.getControl(102).setLabel(getLS(32001)) #fixme
         self.showAlbums()
 
@@ -91,10 +92,12 @@ class GUI(xbmcgui.WindowXML):
             for i in range(selectedControl.size()):
                 selectedControl.getListItem(i).setProperty('showInfo', 'true')
                 self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)
+            self.showInfo = 'true'
         else:
             for i in range(selectedControl.size()):
                 selectedControl.getListItem(i).setProperty('showInfo', 'false')
                 self.getControl(self.CONTROL_USAGE_TEXT).setVisible(False)
+            self.showInfo = 'false'
 
     def download(self):
         #get writable directory
@@ -159,7 +162,7 @@ class GUI(xbmcgui.WindowXML):
     def showItems(self, itemSet, type):
         total = len(itemSet)
         for i, item in enumerate(itemSet):
-            item['showInfo'] = 'true'
+            item['showInfo'] = self.showInfo
             item['type'] = type
             item['title'] = self.SOURCES[self.ACTIVESOURCE]['name'] + '\n' + item['title'] + ' (%s/%s)' % (i+1, total)
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
