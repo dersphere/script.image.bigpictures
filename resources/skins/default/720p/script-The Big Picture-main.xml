@@ -69,14 +69,27 @@
                         <visible>$INFO[ListItem.Property(showInfo)]</visible>
                     </control>
                     <control type="label">
-                        <!--label for title-->
+                        <!--label for Sourcename-->
                         <posx>20</posx>
                         <posy>10</posy>
                         <width>1200</width>
-                        <height>100</height>
+                        <height>30</height>
                         <align>left</align>
                         <aligny>top</aligny>
-                        <label>$INFO[ListItem.Label]</label>
+                        <label>$INFO[ListItem.Property(Album)]</label>
+                        <textcolor>FFDDDDDD</textcolor>
+                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <font>font13</font>
+                    </control>
+                    <control type="label">
+                        <!--label for Album/Picture title-->
+                        <posx>20</posx>
+                        <posy>40</posy>
+                        <width>1200</width>
+                        <height>60</height>
+                        <align>left</align>
+                        <aligny>top</aligny>
+                        <label>$INFO[ListItem.Label] ($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
                         <visible>$INFO[ListItem.Property(showInfo)]</visible>
                         <font>font13</font>
@@ -104,15 +117,27 @@
                         <visible>$INFO[ListItem.Property(showInfo)]</visible>
                     </control>
                     <control type="label">
-                        <!--label for title-->
+                        <!--label for Sourcename-->
                         <posx>20</posx>
                         <posy>10</posy>
                         <width>1200</width>
-                        <height>100</height>
-                        <font>font48b</font>
+                        <height>25</height>
                         <align>left</align>
                         <aligny>top</aligny>
-                        <label>$INFO[ListItem.Label]</label>
+                        <label>$INFO[ListItem.Property(Album)]</label>
+                        <textcolor>FFDDDDDD</textcolor>
+                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <font>font13</font>
+                    </control>
+                    <control type="label">
+                        <!--label for Album/Picture title-->
+                        <posx>20</posx>
+                        <posy>35</posy>
+                        <width>1200</width>
+                        <height>50</height>
+                        <align>left</align>
+                        <aligny>top</aligny>
+                        <label>$INFO[ListItem.Label] ($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
                         <visible>$INFO[ListItem.Property(showInfo)]</visible>
                         <font>font13</font>

@@ -164,7 +164,12 @@ class GUI(xbmcgui.WindowXML):
         for i, item in enumerate(itemSet):
             item['showInfo'] = self.showInfo
             item['type'] = type
-            item['title'] = self.SOURCES[self.ACTIVESOURCE]['name'] + '\n' + item['title'] + ' (%s/%s)' % (i+1, total)
+            # album = Name of the actual Source: "Boston.com: The Big Picture"
+            item['album'] = self.SOURCES[self.ACTIVESOURCE]['name']
+            # title = Title of this Album or Picture: "Best Pictures of the Week"
+            item['title'] = item['title']
+            # duration =  act-element/len-elements: "1/12"
+            item['duration']= '%s/%s' % (i+1, total) #fixme: find something better then this
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
     def addListItem(self, controlId, properties):
