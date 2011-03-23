@@ -103,7 +103,7 @@
                         <aspectratio>scale</aspectratio>
                     </control>
                     <control type="image">
-                        <description>Black Background for the Headline</description>
+                        <description>Background for the Headline</description>
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>1280</width>
@@ -212,12 +212,12 @@
             </control>
             <control type="image" id="104">
                 <description>Background for Usage Instructions</description>
-                <posx>490</posx>
-                <posy>310</posy>
-                <width>300</width>
-                <height>100</height>
+                <posx>384</posx>
+                <posy>232</posy>
+                <width>512</width>
+                <height>256</height>
                 <texture>UsageBack.png</texture>
-                <colordiffuse>FFFFFFFF</colordiffuse>
+                <colordiffuse>CCFFFFFF</colordiffuse>
                 <visible>true</visible>
             </control>
             <control type="textbox" id="103">
