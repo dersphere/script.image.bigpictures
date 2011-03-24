@@ -1,4 +1,4 @@
-1.3.3
+1.4.0
   Changed: Skin has a new Look - thanks to Jezz_X
   Changed: Skin is now animated
   Changed: Dedicated Usage-Help-Box (hides if any key is pressed)
