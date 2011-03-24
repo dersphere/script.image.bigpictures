@@ -13,7 +13,7 @@ class SBB:
         opener = urllib2.build_opener()
         opener.addheaders = headers
         try:
-            print '[SCRIPT][%s] %s attempting to open %s' % (scriptName, __name__, url)
+            # print '[SCRIPT][%s] %s attempting to open %s' % (scriptName, __name__, url)
             usock = opener.open(url)
             response = usock.read()
             usock.close()

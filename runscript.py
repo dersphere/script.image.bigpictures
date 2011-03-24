@@ -18,5 +18,7 @@ if (__name__ == '__main__'):
                  __path__,
                  'default')
     ui.doModal()
+    print '[SCRIPT][%s] version %s exited!' % (__scriptname__, __version__)
     del ui
     sys.modules.clear()
+
