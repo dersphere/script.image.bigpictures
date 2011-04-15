@@ -1,4 +1,4 @@
-import urllib2
+import webget
 import re
 import sys
 from BeautifulSoup import BeautifulSoup
@@ -7,25 +7,6 @@ scriptName = sys.modules['__main__'].__scriptname__
 
 
 class TBP:
-
-    def getHTML(self, url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14')]):
-        """Returns HTML from a given URL"""
-        opener = urllib2.build_opener()
-        opener.addheaders = headers
-        try:
-            # print '[SCRIPT][%s] %s attempting to open %s' % (scriptName, __name__, url)
-            usock = opener.open(url)
-            response = usock.read()
-            usock.close()
-            return response
-        except urllib2.HTTPError, error:
-            print '[SCRIPT][%s] %s error opening %s' % (scriptName, __name__, url)
-            print error.msg, error.code, error.geturl()
-            try:
-                import xbmcgui
-                xbmcgui.Dialog().ok(error.msg, '%s\n%s' % (error.code, error.geturl()))
-            except:
-                pass
 
     def cleanHTML(self, s):
         """The 2nd half of this removes HTML tags.
@@ -47,7 +28,7 @@ class TBP:
     def getFilters(self, url):
         """TBP lets you filter results by categories or months.
         creatues a list of those filters: [[month|category,url], ...]"""
-        tree = BeautifulSoup(self.getHTML(url))
+        tree = BeautifulSoup(webget.getCachedURL(url))
         self.months = list()
         self.categories = list()
         optionNodes = tree.findAll('option', value=re.compile('.+?'))
@@ -59,7 +40,7 @@ class TBP:
 
     def getAlbums(self, url):
         """creates an ordered list albums = [{title, pic, description, link}, ...]"""
-        tree = BeautifulSoup(self.getHTML(url))
+        tree = BeautifulSoup(webget.getCachedURL(url))
         self.albums = list()
         storyNodes = tree.findAll('div', 'headDiv2')
         for node in storyNodes:
@@ -71,7 +52,8 @@ class TBP:
 
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
-        tree = BeautifulSoup(self.getHTML(url))
+        referer = 'http://www.boston.com/bigpicture/'
+        tree = BeautifulSoup(webget.getCachedURL(url, referer))
         title = tree.find('div', 'headDiv2').h2.a.string
         self.photos = list()
         photoNodes = tree.findAll('div', {'class': re.compile('bpImageTop|bpBoth')})
