@@ -1,34 +1,14 @@
-import webget
+import scraper
 import re
-import sys
 from BeautifulSoup import BeautifulSoup
 
-scriptName = sys.modules['__main__'].__scriptname__
 
-
-class TBP:
-
-    def cleanHTML(self, s):
-        """The 2nd half of this removes HTML tags.
-        The 1st half deals with the fact that beautifulsoup sometimes spits
-        out a list of NavigableString objects instead of a regular string.
-        This only happens when there are HTML elements, so it made sense to
-        fix both problems in the same function."""
-        tmp = list()
-        for ns in s:
-            tmp.append(str(ns))
-        s = ''.join(tmp)
-        s = re.sub('\s+', ' ', s)  # remove extra spaces
-        s = re.sub('<.+?>|Image:.+?\r|\r', '', s)  # remove htmltags, image captions, & newlines
-        s = s.replace('&#39;', '\'')  # replace html-encoded double-quotes
-        s = re.sub('#$', '', s)  # remove hash at the end
-        s = s.strip()
-        return s
+class TBP(scraper.Scraper):
 
     def getFilters(self, url):
         """TBP lets you filter results by categories or months.
         creatues a list of those filters: [[month|category,url], ...]"""
-        tree = BeautifulSoup(webget.getCachedURL(url))
+        tree = BeautifulSoup(self.getCachedURL(url))
         self.months = list()
         self.categories = list()
         optionNodes = tree.findAll('option', value=re.compile('.+?'))
@@ -40,7 +20,7 @@ class TBP:
 
     def getAlbums(self, url):
         """creates an ordered list albums = [{title, pic, description, link}, ...]"""
-        tree = BeautifulSoup(webget.getCachedURL(url))
+        tree = BeautifulSoup(self.getCachedURL(url))
         self.albums = list()
         storyNodes = tree.findAll('div', 'headDiv2')
         for node in storyNodes:
@@ -53,7 +33,7 @@ class TBP:
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
         referer = 'http://www.boston.com/bigpicture/'
-        tree = BeautifulSoup(webget.getCachedURL(url, referer))
+        tree = BeautifulSoup(self.getCachedURL(url, referer))
         title = tree.find('div', 'headDiv2').h2.a.string
         self.photos = list()
         photoNodes = tree.findAll('div', {'class': re.compile('bpImageTop|bpBoth')})

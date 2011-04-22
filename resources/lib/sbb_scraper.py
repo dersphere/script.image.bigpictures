@@ -1,32 +1,12 @@
-import webget
-import re
-import sys
+import scraper
 from BeautifulSoup import BeautifulSoup
 
-scriptName = sys.modules['__main__'].__scriptname__
 
-
-class SBB:
-
-    def cleanHTML(self, s):
-        """The 2nd half of this removes HTML tags.
-        The 1st half deals with the fact that beautifulsoup sometimes spits
-        out a list of NavigableString objects instead of a regular string.
-        This only happens when there are HTML elements, so it made sense to
-        fix both problems in the same function."""
-        tmp = list()
-        for ns in s:
-            tmp.append(str(ns))
-        s = ''.join(tmp)
-        s = re.sub('\s+', ' ', s)  # remove extra spaces
-        s = re.sub('<.+?>|Image:.+?\r|\r', '', s)  # remove htmltags, image captions, & newlines
-        s = s.replace('&#39;', '\'')  # replace html-encoded double-quotes
-        s = s.strip()
-        return s
+class SBB(scraper.Scraper):
 
     def getAlbums(self, url):
         """creates an ordered list albums = [{title, pic, description, link}, ...]"""
-        tree = BeautifulSoup(webget.getCachedURL(url))
+        tree = BeautifulSoup(self.getCachedURL(url))
         self.albums = list()
         storyNodes = tree.findAll('div', 'entry-asset asset hentry story')
         for node in storyNodes:
@@ -38,7 +18,7 @@ class SBB:
 
     def getPhotos(self, url):
         """creates an ordered list photos = [{title, pic, description}, ...] """
-        tree = BeautifulSoup(webget.getCachedUrl(url))
+        tree = BeautifulSoup(self.getCachedUrl(url))
         title = tree.find('div', 'asset-name entry-title title').a.string
         self.photos = list()
         subtree_img = tree.findAll('div', attrs={'style': 'background: rgb(224, 224, 224); width: 982px; padding: 4px;'})
