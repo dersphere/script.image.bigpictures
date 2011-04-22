@@ -54,7 +54,8 @@ class GUI(xbmcgui.WindowXML):
         if action in self.ACTION_ANYKEY:
             self.toggleHelp('false')
         else:
-            print action.getId()
+            pass
+            # print action.getId()
         if action in self.ACTION_SHOW_INFO:
             self.toggleInfo()
         elif action in self.ACTION_CONTEXT_MENU:

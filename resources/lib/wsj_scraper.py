@@ -1,8 +1,8 @@
-import scraper
+from scraper import Scraper
 from BeautifulSoup import BeautifulSoup
 
 
-class WSJ(scraper.Scraper):
+class WSJ(Scraper):
 
     def getAlbums(self, url):
         """creates an ordered list albums = [{title, pic, description, link}, ...]"""

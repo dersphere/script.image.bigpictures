@@ -1,9 +1,9 @@
-import scraper
+from scraper import Scraper
 import re
 from BeautifulSoup import BeautifulSoup
 
 
-class TBP(scraper.Scraper):
+class TBP(Scraper):
 
     def getFilters(self, url):
         """TBP lets you filter results by categories or months.

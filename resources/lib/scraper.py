@@ -8,8 +8,9 @@ from zlib import crc32
 scriptname = sys.modules['__main__'].__scriptname__
 cachedir = sys.modules['__main__'].__cachedir__
 
+
 class Scraper:
-    
+
     def getCachedURL(self, url, referer=None):
         print '[SCRIPT][%s] attempting to open %s' % (scriptname, url)
         headers = [('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0')]
@@ -20,8 +21,10 @@ class Scraper:
         timetolive = 3600
         if (not os.path.isdir(cachedir)):
             os.makedirs(cachedir)
-        try: cachefiledate = os.path.getmtime(cachefilefullpath)
-        except: cachefiledate = 0
+        try:
+            cachefiledate = os.path.getmtime(cachefilefullpath)
+        except:
+            cachefiledate = 0
         cachefiledate = 0
         if (time.time() - (timetolive)) > cachefiledate:
             try:
@@ -35,7 +38,7 @@ class Scraper:
                 outfile.close()
             except urllib2.HTTPError, error:
                 print '[SCRIPT][%s] error opening %s' % (scriptname, url)
-                print error.msg, error.code, error.geturl() 
+                print error.msg, error.code, error.geturl()
         else:
             print '[SCRIPT][%s] %s retrieved from cache' % (scriptname, url)
             sock = open(cachefilefullpath, 'r')
@@ -60,4 +63,3 @@ class Scraper:
         s = s.replace('&#8221;', '"')  # replace html-encoded double-quotes
         s = s.strip()
         return s
-
