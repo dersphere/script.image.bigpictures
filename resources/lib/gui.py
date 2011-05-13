@@ -9,7 +9,6 @@ import sbb_scraper
 import wsj_scraper
 
 Addon = sys.modules['__main__'].Addon
-# enable localization
 getLS = Addon.getLocalizedString
 
 
@@ -28,28 +27,21 @@ class GUI(xbmcgui.WindowXML):
     ACTION_UP = [3]
     ACTION_ANYKEY = [117, 122, 9, 11, 10, 13, 4, 3, 1, 2]
 
-    ACTIVESOURCE = 0
-
-    SOURCES = list()
-    SOURCES.append({'name': 'Boston.com: The Big Picture',
-                    'object': 'tbp',
-                    'url': 'http://www.boston.com/bigpicture/'})
-    SOURCES.append({'name': 'Boston.com: The Big Shot',
-                    'object': 'tbp',
-                    'url': 'http://www.boston.com/sports/blogs/bigshots/'})
-    SOURCES.append({'name': 'Sacramento Bee: The Frame',
-                    'object': 'sbb'})
-    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal',
-                    'object': 'wsj'})
-
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-        self.tbp = tbp_scraper.TBP()
-        self.sbb = sbb_scraper.SBB()
-        self.wsj = wsj_scraper.WSJ()
+        tbp = tbp_scraper.TBP()
+        sbb = sbb_scraper.SBB()
+        wsj = wsj_scraper.WSJ()
+
+        self.SOURCES = list()
+        self.SOURCES.append(tbp)
+        self.SOURCES.append(sbb)
+        self.SOURCES.append(wsj)
 
     def onInit(self):
-        self.showInfo = 'true'
+        self.show_info = 'true'
+        self.active_source_id = 0
+        self.setSource()
         self.showAlbums()
 
     def onFocus(self, controlId):
@@ -76,17 +68,11 @@ class GUI(xbmcgui.WindowXML):
             self.close()
         elif action in self.ACTION_DOWN and \
              self.getProperty('type') == 'album':
-            if len(self.SOURCES) > self.ACTIVESOURCE + 1:
-                self.ACTIVESOURCE += 1
-            else:
-                self.ACTIVESOURCE = 0
+            self.nextSource()
             self.showAlbums()
         elif action in self.ACTION_UP and \
              self.getProperty('type') == 'album':
-            if self.ACTIVESOURCE == 0:
-                self.ACTIVESOURCE = len(self.SOURCES) - 1
-            else:
-                self.ACTIVESOURCE -= 1
+            self.prevSource()
             self.showAlbums()
 
     def onClick(self, controlId):
@@ -104,16 +90,16 @@ class GUI(xbmcgui.WindowXML):
 
     def toggleInfo(self):
         selectedControl = self.getControl(self.CONTROL_MAIN_IMAGE)
-        if self.getProperty('showInfo') == 'false':
+        if self.getProperty('show_info') == 'false':
             for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('showInfo',
+                selectedControl.getListItem(i).setProperty('show_info',
                                                            'true')
-            self.showInfo = 'true'
+            self.show_info = 'true'
         else:
             for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('showInfo',
+                selectedControl.getListItem(i).setProperty('show_info',
                                                            'false')
-            self.showInfo = 'false'
+            self.show_info = 'false'
 
     def toggleHelp(self, show):
         selectedControl = self.getControl(self.CONTROL_USAGE_TEXT)
@@ -133,20 +119,10 @@ class GUI(xbmcgui.WindowXML):
                 imageDownloader.Download(photos, downloadPath)
             elif self.getProperty('type') == 'album':
                 pDialog = xbmcgui.DialogProgress()
-                pDialog.create(self.SOURCES[self.ACTIVESOURCE]['name'])
+                pDialog.create(self.Source.NAME)
                 link = self.getProperty('link')
                 pDialog.update(50)
-                if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-                    self.tbp.getPhotos(link)
-                    photos = self.tbp.photos
-                elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-                    self.sbb.getPhotos(link)
-                    photos = self.sbb.photos
-                elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
-                    self.wsj.getPhotos(link)
-                    photos = self.wsj.photos
-                else:
-                    photos = {'title': '', 'pic': '', 'description': ''}
+                photos = self.Source.getPhotos(link)
                 pDialog.update(100)
                 pDialog.close()
                 imageDownloader.Download(photos, downloadPath)
@@ -157,18 +133,8 @@ class GUI(xbmcgui.WindowXML):
                                    getLS(32031),
                                    getLS(32032)]))
         link = self.getProperty('link')
+        photos = self.Source.getPhotos(link)
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
-        if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-            self.tbp.getPhotos(link)
-            photos = self.tbp.photos
-        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-            self.sbb.getPhotos(link)
-            photos = self.sbb.photos
-        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
-            self.wsj.getPhotos(link)
-            photos = self.wsj.photos
-        else:
-            photos = [{'title': '', 'pic': '', 'description': ''}]
         self.showItems(photos, 'photo')
 
     def showAlbums(self):
@@ -177,34 +143,40 @@ class GUI(xbmcgui.WindowXML):
                                    getLS(32041),
                                    getLS(32042)]))
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
-        if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-            self.tbp.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
-            albums = self.tbp.albums
-        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-            self.sbb.getAlbums()
-            albums = self.sbb.albums
-        elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
-            self.wsj.getAlbums()
-            albums = self.wsj.albums
-        else:
-            albums = [{'title': '', 'pic': '', 'description': '', 'link': ''}]
+        albums = self.Source.getAlbums()
         self.showItems(albums, 'album')
 
     def showItems(self, itemSet, type):
         total = len(itemSet)
         for i, item in enumerate(itemSet):
-            item['showInfo'] = self.showInfo
+            item['show_info'] = self.show_info
             item['type'] = type
-            item['album'] = self.SOURCES[self.ACTIVESOURCE]['name']
+            item['album'] = self.Source.NAME
             item['title'] = item['title']
             item['duration'] = '%s/%s' % (i + 1, total)
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
     def addListItem(self, controlId, properties):
-        # print properties
         li = xbmcgui.ListItem(label=properties['title'],
                               label2=properties['description'],
                               iconImage=properties['pic'])
         for p in properties.keys():
             li.setProperty(p, properties[p])
         self.getControl(controlId).addItem(li)
+
+    def nextSource(self):
+        if len(self.SOURCES) > self.active_source_id + 1:
+            self.active_source_id += 1
+        else:
+            self.active_source_id = 0
+        self.setSource()
+
+    def prevSource(self):
+        if self.active_source_id == 0:
+            self.active_source_id = len(self.SOURCES) - 1
+        else:
+            self.active_source_id -= 1
+        self.setSource()
+
+    def setSource(self):
+        self.Source = self.SOURCES[self.active_source_id]

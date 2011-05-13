@@ -5,6 +5,8 @@ from BeautifulSoup import BeautifulSoup
 
 class TBP(Scraper):
 
+    NAME = 'Boston.com: The Big Picture'
+
     def getFilters(self, url):
         tree = BeautifulSoup(self.getCachedURL(url))
         self.months = list()
@@ -16,7 +18,8 @@ class TBP(Scraper):
             elif node.parent.option.contents[0] == 'Select a category':
                 self.categories.append([node.string, node['value']])
 
-    def getAlbums(self, url):
+    def getAlbums(self):
+        url = 'http://www.boston.com/bigpicture/'
         tree = BeautifulSoup(self.getCachedURL(url))
         self.albums = list()
         storyNodes = tree.findAll('div', 'headDiv2')
@@ -31,6 +34,7 @@ class TBP(Scraper):
                                 'pic': pic,
                                 'description': description,
                                 'link': link})
+        return self.albums
 
     def getPhotos(self, url):
         referer = 'http://www.boston.com/bigpicture/'
@@ -48,3 +52,4 @@ class TBP(Scraper):
             self.photos.append({'title': title,
                                 'pic': pic,
                                 'description': description})
+        return self.photos

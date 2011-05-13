@@ -61,7 +61,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Property(Album)]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                     </control>
                     <control type="label">
@@ -74,7 +74,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                     </control>
                     <control type="label">
@@ -87,7 +87,7 @@
                         <aligny>center</aligny>
                         <label>($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                     </control>
                 </itemlayout>
@@ -110,7 +110,7 @@
                         <height>64</height>
                         <texture border="0,0,20,0">HeaderBack.png</texture>
                         <colordiffuse>AAFFFFFF</colordiffuse>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="label">
@@ -123,7 +123,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Property(Album)]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -137,7 +137,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -151,7 +151,7 @@
                         <aligny>center</aligny>
                         <label>($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -166,7 +166,7 @@
                         <width>80</width>
                         <height>80</height>
                         <texture>left.png</texture>
-                        <visible>$INFO[ListItem.Property(showInfo)] + Container(100).HasPrevious</visible>
+                        <visible>$INFO[ListItem.Property(show_info)] + Container(100).HasPrevious</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="image">
@@ -180,7 +180,7 @@
                         <width>80</width>
                         <height>80</height>
                         <texture>right.png</texture>
-                        <visible>$INFO[ListItem.Property(showInfo)] + Container(100).HasNext</visible>
+                        <visible>$INFO[ListItem.Property(show_info)] + Container(100).HasNext</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="image">
@@ -193,7 +193,7 @@
                         <width>1280</width>
                         <height>270</height>
                         <texture>DescriptionBack.png</texture>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="textbox">
@@ -212,7 +212,7 @@
                         <wrapmultiline>true</wrapmultiline>
                         <label>$INFO[ListItem.Label2]</label>
                         <textcolor>white</textcolor>
-                        <visible>$INFO[ListItem.Property(showInfo)]</visible>
+                        <visible>$INFO[ListItem.Property(show_info)]</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                 </focusedlayout>

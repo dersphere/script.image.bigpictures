@@ -11,6 +11,8 @@ cachedir = sys.modules['__main__'].__cachedir__
 
 class Scraper:
 
+    NAME = str()
+
     def getCachedURL(self, url, referer=None):
         print '[SCRIPT][%s] attempting to open %s' % (scriptname, url)
         ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) ' \

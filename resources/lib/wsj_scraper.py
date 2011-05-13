@@ -4,6 +4,8 @@ from BeautifulSoup import BeautifulSoup
 
 class WSJ(Scraper):
 
+    NAME = 'Wallstreetjournal: The Photo Journal'
+
     def getAlbums(self):
         u = 'http://blogs.wsj.com/photojournal/category/pictures-of-the-week/'
         tree = BeautifulSoup(self.getCachedURL(u))
@@ -21,6 +23,7 @@ class WSJ(Scraper):
                                 'pic': pic,
                                 'description': description,
                                 'link': link})
+        return self.albums
 
     def getPhotos(self, url, append=False):
         tree = BeautifulSoup(self.getCachedURL(url))
@@ -39,3 +42,4 @@ class WSJ(Scraper):
                                 'description': description})
         if tree.find('a', 'nav_next'):
             self.getPhotos(tree.find('a', 'nav_next')['href'], append=True)
+        return self.photos

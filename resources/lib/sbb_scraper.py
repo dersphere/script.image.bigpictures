@@ -4,6 +4,8 @@ from BeautifulSoup import BeautifulSoup
 
 class SBB(Scraper):
 
+    NAME = 'Sacramento Bee: The Frame'
+
     def getAlbums(self):
         url = 'http://blogs.sacbee.com/photos/'
         tree = BeautifulSoup(self.getCachedURL(url))
@@ -20,6 +22,7 @@ class SBB(Scraper):
                                 'pic': pic,
                                 'description': desc,
                                 'link': link})
+        return self.albums
 
     def getPhotos(self, url):
         tree = BeautifulSoup(self.getCachedURL(url))
@@ -41,3 +44,4 @@ class SBB(Scraper):
             self.photos.append({'title': title,
                                 'pic': pic,
                                 'description': description})
+        return self.photos
