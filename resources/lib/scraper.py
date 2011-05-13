@@ -29,7 +29,6 @@ class Scraper:
             cachefiledate = os.path.getmtime(cachefilefullpath)
         except:
             cachefiledate = 0
-        cachefiledate = 0
         if (time.time() - (timetolive)) > cachefiledate:
             try:
                 print '[SCRIPT][%s] %s retrieved from web' % (scriptname, url)

@@ -16,8 +16,7 @@ class WSJ(Scraper):
             title = self.cleanHTML(node.find('h2').a.string)
             link = node.find('h2').a['href']
             content_raw = node.findAll('div', attrs={'class': 'postContent'})
-            content = self.cleanHTML(content_raw)
-            description = content[1].p
+            description = self.cleanHTML(content_raw[1].p)
             pic = node.find('img')['src'].strip()
             self.albums.append({'title': title,
                                 'pic': pic,

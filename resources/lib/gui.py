@@ -25,7 +25,7 @@ class GUI(xbmcgui.WindowXML):
     ACTION_EXIT_SCRIPT = [10, 13]
     ACTION_DOWN = [4]
     ACTION_UP = [3]
-    ACTION_ANYKEY = [117, 122, 9, 11, 10, 13, 4, 3, 1, 2]
+    ACTION_ANYKEY = [117, 122, 9, 11, 10, 13, 4, 3, 1, 2, 107]
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
@@ -51,8 +51,8 @@ class GUI(xbmcgui.WindowXML):
         if action in self.ACTION_ANYKEY:
             self.toggleHelp('false')
         else:
+            #print action.getId()
             pass
-            # print action.getId()
         if action in self.ACTION_SHOW_INFO:
             self.toggleInfo()
         elif action in self.ACTION_CONTEXT_MENU:
