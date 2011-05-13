@@ -27,7 +27,7 @@
                 <height>60</height>
                 <align>left</align>
                 <aligny>top</aligny>
-                <label>32001</label>
+                <label>$LOCALIZE[SCRIPT32001]</label>
                 <textcolor>FFAAAAAA</textcolor>
                 <font>font13</font>
             </control>

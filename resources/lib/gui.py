@@ -50,7 +50,6 @@ class GUI(xbmcgui.WindowXML):
 
     def onInit(self):
         self.showInfo = 'true'
-        self.getControl(102).setLabel(getLS(32001))  # fixme
         self.showAlbums()
 
     def onFocus(self, controlId):
