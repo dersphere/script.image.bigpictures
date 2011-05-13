@@ -31,10 +31,16 @@ class GUI(xbmcgui.WindowXML):
     ACTIVESOURCE = 0
 
     SOURCES = list()
-    SOURCES.append({'name': 'Boston.com: The Big Picture', 'object': 'tbp', 'url': 'http://www.boston.com/bigpicture/'})
-    SOURCES.append({'name': 'Boston.com: The Big Shot', 'object': 'tbp', 'url': 'http://www.boston.com/sports/blogs/bigshots/'})
-    SOURCES.append({'name': 'Sacramento Bee: The Frame', 'object': 'sbb', 'url': 'http://blogs.sacbee.com/photos/'})
-    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal', 'object': 'wsj', 'url': 'http://blogs.wsj.com/photojournal/category/pictures-of-the-week/'})
+    SOURCES.append({'name': 'Boston.com: The Big Picture',
+                    'object': 'tbp',
+                    'url': 'http://www.boston.com/bigpicture/'})
+    SOURCES.append({'name': 'Boston.com: The Big Shot',
+                    'object': 'tbp',
+                    'url': 'http://www.boston.com/sports/blogs/bigshots/'})
+    SOURCES.append({'name': 'Sacramento Bee: The Frame',
+                    'object': 'sbb'})
+    SOURCES.append({'name': 'Wallstreetjournal: The Photo Journal',
+                    'object': 'wsj'})
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
@@ -69,13 +75,15 @@ class GUI(xbmcgui.WindowXML):
                 self.showAlbums()
         elif action in self.ACTION_EXIT_SCRIPT:
             self.close()
-        elif action in self.ACTION_DOWN and self.getProperty('type') == 'album':
+        elif action in self.ACTION_DOWN and \
+             self.getProperty('type') == 'album':
             if len(self.SOURCES) > self.ACTIVESOURCE + 1:
                 self.ACTIVESOURCE += 1
             else:
                 self.ACTIVESOURCE = 0
             self.showAlbums()
-        elif action in self.ACTION_UP and self.getProperty('type') == 'album':
+        elif action in self.ACTION_UP and \
+             self.getProperty('type') == 'album':
             if self.ACTIVESOURCE == 0:
                 self.ACTIVESOURCE = len(self.SOURCES) - 1
             else:
@@ -92,17 +100,20 @@ class GUI(xbmcgui.WindowXML):
 
     def getProperty(self, property, controlId=CONTROL_MAIN_IMAGE):
         """Returns a property of the selected item"""
-        return self.getControl(controlId).getSelectedItem().getProperty(property)
+        control = self.getControl(controlId)
+        return control.getSelectedItem().getProperty(property)
 
     def toggleInfo(self):
         selectedControl = self.getControl(self.CONTROL_MAIN_IMAGE)
         if self.getProperty('showInfo') == 'false':
             for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('showInfo', 'true')
+                selectedControl.getListItem(i).setProperty('showInfo',
+                                                           'true')
             self.showInfo = 'true'
         else:
             for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('showInfo', 'false')
+                selectedControl.getListItem(i).setProperty('showInfo',
+                                                           'false')
             self.showInfo = 'false'
 
     def toggleHelp(self, show):
@@ -116,18 +127,20 @@ class GUI(xbmcgui.WindowXML):
 
     def download(self):
         # get writable directory
-        downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020), getLS(32022)]), 'pictures')
+        downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020),
+                                                            getLS(32022)]),
+                                               'pictures')
         if downloadPath:
             if self.getProperty('type') == 'photo':
-                photos = [{'pic':self.getProperty('pic'), 'title': ''}]  # url needs to be passed as a dict in a list.
+                photos = [{'pic':self.getProperty('pic'), 'title': ''}]
                 imageDownloader.Download(photos, downloadPath)
             elif self.getProperty('type') == 'album':
-                pDialog = xbmcgui.DialogProgress()  # show useless dialog so user knows something is happening.
+                pDialog = xbmcgui.DialogProgress()
                 pDialog.create(self.SOURCES[self.ACTIVESOURCE]['name'])
                 link = self.getProperty('link')
                 pDialog.update(50)
                 if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-                    self.tbp.getPhotos(link)  # Get a list of photos from the link.
+                    self.tbp.getPhotos(link)
                     photos = self.tbp.photos
                 elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
                     self.sbb.getPhotos(link)
@@ -142,11 +155,14 @@ class GUI(xbmcgui.WindowXML):
                 imageDownloader.Download(photos, downloadPath)
 
     def showPhotos(self):  # the order is significant!
-        self.getControl(self.CONTROL_USAGE_TEXT).setText('\n'.join([getLS(32030), getLS(32031), getLS(32032)]))
+        control = self.getControl(self.CONTROL_USAGE_TEXT)
+        control.setText('\n'.join([getLS(32030),
+                                   getLS(32031),
+                                   getLS(32032)]))
         link = self.getProperty('link')
-        self.getControl(self.CONTROL_MAIN_IMAGE).reset()  # Clear the old list of albums.
+        self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
-            self.tbp.getPhotos(link)  # Get a list of photos from the link.
+            self.tbp.getPhotos(link)
             photos = self.tbp.photos
         elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
             self.sbb.getPhotos(link)
@@ -159,16 +175,19 @@ class GUI(xbmcgui.WindowXML):
         self.showItems(photos, 'photo')
 
     def showAlbums(self):
-        self.getControl(self.CONTROL_USAGE_TEXT).setText('\n'.join([getLS(32040), getLS(32041), getLS(32042)]))
-        self.getControl(self.CONTROL_MAIN_IMAGE).reset()  # This is necessary when returning from photos.
+        control = self.getControl(self.CONTROL_USAGE_TEXT)
+        control.setText('\n'.join([getLS(32040),
+                                   getLS(32041),
+                                   getLS(32042)]))
+        self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         if self.SOURCES[self.ACTIVESOURCE]['object'] == 'tbp':
             self.tbp.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
             albums = self.tbp.albums
         elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'sbb':
-            self.sbb.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
+            self.sbb.getAlbums()
             albums = self.sbb.albums
         elif self.SOURCES[self.ACTIVESOURCE]['object'] == 'wsj':
-            self.wsj.getAlbums(self.SOURCES[self.ACTIVESOURCE]['url'])
+            self.wsj.getAlbums()
             albums = self.wsj.albums
         else:
             albums = [{'title': '', 'pic': '', 'description': '', 'link': ''}]
@@ -179,17 +198,16 @@ class GUI(xbmcgui.WindowXML):
         for i, item in enumerate(itemSet):
             item['showInfo'] = self.showInfo
             item['type'] = type
-            # album = Name of the actual Source: "Boston.com: The Big Picture"
             item['album'] = self.SOURCES[self.ACTIVESOURCE]['name']
-            # title = Title of this Album or Picture: "Best Pictures of the Week"
             item['title'] = item['title']
-            # duration =  act-element/len-elements: "1/12"
-            item['duration'] = '%s/%s' % (i + 1, total)  # fixme: find something better then this
+            item['duration'] = '%s/%s' % (i + 1, total)
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
     def addListItem(self, controlId, properties):
         # print properties
-        li = xbmcgui.ListItem(label=properties['title'], label2=properties['description'], iconImage=properties['pic'])
+        li = xbmcgui.ListItem(label=properties['title'],
+                              label2=properties['description'],
+                              iconImage=properties['pic'])
         for p in properties.keys():
             li.setProperty(p, properties[p])
         self.getControl(controlId).addItem(li)

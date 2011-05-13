@@ -13,7 +13,9 @@ class Scraper:
 
     def getCachedURL(self, url, referer=None):
         print '[SCRIPT][%s] attempting to open %s' % (scriptname, url)
-        headers = [('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0')]
+        ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) ' \
+             'Gecko/20100101 Firefox/4.0'
+        headers = [('User-Agent', ua)]
         if referer:
             headers.append(('Referer', referer))
         filename = str(crc32(url))
@@ -57,7 +59,7 @@ class Scraper:
             tmp.append(str(ns))
         s = ''.join(tmp)
         s = re.sub('\s+', ' ', s)  # remove extra spaces
-        s = re.sub('<.+?>|Image:.+?\r|\r', '', s)  # remove htmltags, image captions, & newlines
+        s = re.sub('<.+?>|Image:.+?\r|\r', '', s)  # html, image captions, & NL
         s = s.replace('&#39;', '\'')  # replace html-encoded double-quotes
         s = s.replace('&#8217;', '\'')  # replace html-encoded single-quotes
         s = s.replace('&#8221;', '"')  # replace html-encoded double-quotes

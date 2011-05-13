@@ -10,7 +10,8 @@ __id__ = Addon.getAddonInfo('id')
 __author__ = Addon.getAddonInfo('author')
 __version__ = Addon.getAddonInfo('version')
 __path__ = Addon.getAddonInfo('path')
-__cachedir__ = xbmc.translatePath('special://profile/addon_data/%s/cache/' % __id__)
+__cachedir__ = xbmc.translatePath('special://profile/addon_data/%s/cache/'
+                                  % __id__)
 
 print '[SCRIPT][%s] version %s initialized!' % (__scriptname__, __version__)
 
