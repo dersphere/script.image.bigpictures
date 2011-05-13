@@ -119,10 +119,8 @@ class GUI(xbmcgui.WindowXML):
         selectedControl = self.getControl(self.CONTROL_USAGE_TEXT)
         if show == 'false':
             self.getControl(self.CONTROL_USAGE_TEXT).setVisible(False)
-            self.getControl(self.CONTROL_USAGE_BG).setVisible(False)
         elif show == 'true':
             self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)
-            self.getControl(self.CONTROL_USAGE_BG).setVisible(True)
 
     def download(self):
         # get writable directory

@@ -225,7 +225,7 @@
                 <height>150</height>
                 <texture border="20">UsageBack.png</texture>
                 <colordiffuse>CCFFFFFF</colordiffuse>
-                <visible>true</visible>
+                <visible>Control.IsVisible(103)</visible>
             </control>
             <control type="textbox" id="103">
                 <description>Usage Instructions</description>
