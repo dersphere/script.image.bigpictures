@@ -7,6 +7,7 @@ import xbmcaddon
 import tbp_scraper
 import sbb_scraper
 import wsj_scraper
+import aif_scraper
 
 Addon = sys.modules['__main__'].Addon
 getLS = Addon.getLocalizedString
@@ -32,9 +33,11 @@ class GUI(xbmcgui.WindowXML):
         tbp = tbp_scraper.TBP()
         sbb = sbb_scraper.SBB()
         wsj = wsj_scraper.WSJ()
+        aif = aif_scraper.AIF()
 
         self.SOURCES = list()
         self.SOURCES.append(tbp)
+        self.SOURCES.append(aif)        
         self.SOURCES.append(sbb)
         self.SOURCES.append(wsj)
 
