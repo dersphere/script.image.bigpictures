@@ -24,16 +24,19 @@ class TBP(Scraper):
         self.albums = list()
         storyNodes = tree.findAll('div', 'headDiv2')
         for node in storyNodes:
-            title = node.find('a').string
-            link = node.find('a')['href']
-            desc_raw = node.find('div',
-                                 attrs={'class': 'bpBody'}).contents
-            description = self.cleanHTML(desc_raw)
-            pic = node.find('img')['src']
-            self.albums.append({'title': title,
-                                'pic': pic,
-                                'description': description,
-                                'link': link})
+            try:
+                title = node.find('a').string
+                link = node.find('a')['href']
+                desc_raw = node.find('div',
+                                     attrs={'class': 'bpBody'}).contents
+                description = self.cleanHTML(desc_raw)
+                pic = node.find('img')['src']
+                self.albums.append({'title': title,
+                                    'pic': pic,
+                                    'description': description,
+                                    'link': link})
+            except:
+                pass
         return self.albums
 
     def getPhotos(self, url):

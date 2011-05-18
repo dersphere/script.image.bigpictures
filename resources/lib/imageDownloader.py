@@ -33,8 +33,8 @@ class Download:
                                                  foldername,
                                                  self.filename)
             print '[SCRIPT][%s] %s --> %s' % (scriptName,
-                                                self.url,
-                                                self.fullDownloadPath)
+                                              self.url,
+                                              self.fullDownloadPath)
 
             if self.checkPath(downloadPath, foldername, self.filename):
                 try:
