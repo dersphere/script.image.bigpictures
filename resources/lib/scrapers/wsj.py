@@ -1,4 +1,4 @@
-from scraper import ScraperParent
+from parent import ScraperParent
 from BeautifulSoup import BeautifulSoup
 
 

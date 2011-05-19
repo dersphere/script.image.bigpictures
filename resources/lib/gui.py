@@ -4,10 +4,7 @@ import xbmcgui
 import imageDownloader
 import xbmcaddon
 
-import tbp_scraper
-import sbb_scraper
-import wsj_scraper
-import aif_scraper
+from scrapers import aif, sbb, tbp, wsj
 
 Addon = sys.modules['__main__'].Addon
 getLS = Addon.getLocalizedString
@@ -30,16 +27,12 @@ class GUI(xbmcgui.WindowXML):
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-        tbp = tbp_scraper.Scraper()
-        sbb = sbb_scraper.Scraper()
-        wsj = wsj_scraper.Scraper()
-        aif = aif_scraper.Scraper()
 
         self.SOURCES = list()
-        self.SOURCES.append(tbp)
-        self.SOURCES.append(aif)        
-        self.SOURCES.append(sbb)
-        self.SOURCES.append(wsj)
+        self.SOURCES.append(tbp.Scraper())
+        self.SOURCES.append(aif.Scraper())
+        self.SOURCES.append(sbb.Scraper())
+        self.SOURCES.append(wsj.Scraper())
 
     def onInit(self):
         self.show_info = 'true'
