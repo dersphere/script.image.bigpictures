@@ -1,9 +1,9 @@
-from scraper import Scraper
+from scraper import ScraperParent
 import re
 from BeautifulSoup import BeautifulSoup
 
 
-class AIF(Scraper):
+class Scraper(ScraperParent):
 
     NAME = 'The Atlantic: In Focus'
 

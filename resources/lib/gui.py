@@ -30,10 +30,10 @@ class GUI(xbmcgui.WindowXML):
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-        tbp = tbp_scraper.TBP()
-        sbb = sbb_scraper.SBB()
-        wsj = wsj_scraper.WSJ()
-        aif = aif_scraper.AIF()
+        tbp = tbp_scraper.Scraper()
+        sbb = sbb_scraper.Scraper()
+        wsj = wsj_scraper.Scraper()
+        aif = aif_scraper.Scraper()
 
         self.SOURCES = list()
         self.SOURCES.append(tbp)

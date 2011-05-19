@@ -1,8 +1,8 @@
-from scraper import Scraper
+from scraper import ScraperParent
 from BeautifulSoup import BeautifulSoup
 
 
-class WSJ(Scraper):
+class Scraper(ScraperParent):
 
     NAME = 'Wallstreetjournal: The Photo Journal'
 

@@ -1,9 +1,9 @@
-from scraper import Scraper
+from scraper import ScraperParent
 import re
 from BeautifulSoup import BeautifulSoup
 
 
-class TBP(Scraper):
+class Scraper(ScraperParent):
 
     NAME = 'Boston.com: The Big Picture'
 

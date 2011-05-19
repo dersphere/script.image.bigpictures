@@ -9,7 +9,7 @@ scriptname = sys.modules['__main__'].__scriptname__
 cachedir = sys.modules['__main__'].__cachedir__
 
 
-class Scraper:
+class ScraperParent:
 
     NAME = str()
 

@@ -1,8 +1,8 @@
-from scraper import Scraper
+from scraper import ScraperParent
 from BeautifulSoup import BeautifulSoup
 
 
-class SBB(Scraper):
+class Scraper(ScraperParent):
 
     NAME = 'Sacramento Bee: The Frame'
 
