@@ -18,4 +18,8 @@
   <string id="32040">Links + Rechts = Album wechseln</string>
   <string id="32041">Hoch + Runter = Quelle wechseln</string>
   <string id="32042">Select = Album öffnen</string>
+  <!-- Settings -->
+  <string id="32050">Seitenverhältnis (Wechsel mit 0-Taste)</string>
+  <string id="32051">scale</string>
+  <string id="32052">keep</string>
 </strings>

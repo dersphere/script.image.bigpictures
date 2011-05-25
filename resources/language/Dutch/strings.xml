@@ -19,4 +19,8 @@
   <string id="32040">Links + Rechts - Wisselen van album</string>
   <string id="32041">Boven + Beneden - Wisselt afbeelding</string>
   <string id="32042">Select - Activeert (bekijken) album</string>
+    <!-- Settings -->
+  <string id="32050">Aspect-Ratio (Toggle with 0-Key)</string>
+  <string id="32051">scale</string>
+  <string id="32052">keep</string>
 </strings>

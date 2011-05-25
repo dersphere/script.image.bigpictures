@@ -8,6 +8,7 @@ from scrapers import aif, sbb, tbp, wsj
 
 Addon = sys.modules['__main__'].Addon
 getLS = Addon.getLocalizedString
+getSetting = Addon.getSetting
 
 
 class GUI(xbmcgui.WindowXML):
@@ -24,6 +25,7 @@ class GUI(xbmcgui.WindowXML):
     ACTION_DOWN = [4]
     ACTION_UP = [3]
     ACTION_ANYKEY = [117, 122, 9, 11, 10, 13, 4, 3, 1, 2, 107]
+    ACTION_0 = [58]
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXML.__init__(self, *args, **kwargs)
@@ -37,6 +39,9 @@ class GUI(xbmcgui.WindowXML):
     def onInit(self):
         self.show_info = 'true'
         self.active_source_id = 0
+        aspect_ratio_id = int(getSetting('aspect_ratio'))
+        aspect_ratios = ('scale', 'keep')
+        self.default_aspect = aspect_ratios[aspect_ratio_id]
         self.setSource()
         self.showAlbums()
 
@@ -70,6 +75,8 @@ class GUI(xbmcgui.WindowXML):
              self.getProperty('type') == 'album':
             self.prevSource()
             self.showAlbums()
+        elif action in self.ACTION_0:
+            self.toggleAspect()
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
@@ -96,6 +103,16 @@ class GUI(xbmcgui.WindowXML):
                 selectedControl.getListItem(i).setProperty('show_info',
                                                            'false')
             self.show_info = 'false'
+
+    def toggleAspect(self):
+        selectedControl = self.getControl(self.CONTROL_MAIN_IMAGE)
+        if self.getProperty('aspectratio') == 'scale':
+            self.default_aspect = 'keep'
+        else:
+            self.default_aspect = 'scale'
+        for i in range(selectedControl.size()):
+            selectedControl.getListItem(i).setProperty('aspectratio',
+                                                       self.default_aspect)
 
     def toggleHelp(self, show):
         selectedControl = self.getControl(self.CONTROL_USAGE_TEXT)
@@ -150,6 +167,7 @@ class GUI(xbmcgui.WindowXML):
             item['album'] = self.Source.NAME
             item['title'] = item['title']
             item['duration'] = '%s/%s' % (i + 1, total)
+            item['aspectratio'] = self.default_aspect
             self.addListItem(self.CONTROL_MAIN_IMAGE, item)
 
     def addListItem(self, controlId, properties):
