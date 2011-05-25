@@ -1,6 +1,7 @@
 1.5.0
   Added: New Scraper: 'The Atlantic: In Focus'
   Removed: Scraper 'Boston.com: The Big Shot' - outdated
+  Added: Function and Setting for changing the aspect-ratio of the Pictures
   Improved: Caching of HTML-Pages (much faster now)
   Improved: Rewrote the multi-scraper-logic
   Fixed: The Big Pictures Facebook-comment-change Announcement broke scraper
