@@ -10,6 +10,8 @@ from scrapers import aif, sbb, tbp, wsj
 Addon = sys.modules['__main__'].Addon
 getLS = Addon.getLocalizedString
 getSetting = Addon.getSetting
+setSetting = Addon.setSetting
+openSettings = Addon.openSettings
 
 
 class GUI(xbmcgui.WindowXML):
@@ -41,6 +43,7 @@ class GUI(xbmcgui.WindowXML):
         self.setSource()
         self.showAlbums()
         self.setFocus(self.getControl(self.CONTROL_MAIN_IMAGE))
+        self.showHelp()
 
     def onFocus(self, controlId):
         pass
@@ -170,3 +173,8 @@ class GUI(xbmcgui.WindowXML):
 
     def setSource(self):
         self.Source = self.SOURCES[self.active_source_id]
+
+    def showHelp(self):
+        if not getSetting('help_already_shown')
+            openSettings()
+            setSetting('help_already_shown', 'yes')
