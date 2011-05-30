@@ -175,6 +175,6 @@ class GUI(xbmcgui.WindowXML):
         self.Source = self.SOURCES[self.active_source_id]
 
     def showHelp(self):
-        if not getSetting('help_already_shown')
+        if not getSetting('help_already_shown'):
             openSettings()
             setSetting('help_already_shown', 'yes')
