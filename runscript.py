@@ -19,7 +19,8 @@ if (__name__ == '__main__'):
     import resources.lib.gui as gui
     ui = gui.GUI('script-%s-main.xml' % __scriptname__,
                  __path__,
-                 'default')
+                 'default',
+                 '720p')
     ui.doModal()
     print '[SCRIPT][%s] version %s exited!' % (__scriptname__, __version__)
     del ui

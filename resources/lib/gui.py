@@ -3,6 +3,7 @@ import sys
 import xbmcgui
 import imageDownloader
 import xbmcaddon
+import xbmc
 
 from scrapers import aif, sbb, tbp, wsj
 
@@ -12,11 +13,9 @@ getSetting = Addon.getSetting
 
 
 class GUI(xbmcgui.WindowXML):
-    # Label Controls
+    # Controls
     CONTROL_MAIN_IMAGE = 100
-    CONTROL_USAGE_TEXT = 103
-    CONTROL_USAGE_BG = 104
-    # Label Actions
+    # Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
     ACTION_PREVIOUS_MENU = [9]
@@ -24,12 +23,9 @@ class GUI(xbmcgui.WindowXML):
     ACTION_EXIT_SCRIPT = [10, 13]
     ACTION_DOWN = [4]
     ACTION_UP = [3]
-    ACTION_ANYKEY = [117, 122, 9, 11, 10, 13, 4, 3, 1, 2, 107]
     ACTION_0 = [58]
 
-    def __init__(self, *args, **kwargs):
-        xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-
+    def __init__(self, xmlFilename, scriptPath, defaultSkin, defaultRes):
         self.SOURCES = list()
         self.SOURCES.append(tbp.Scraper())
         self.SOURCES.append(aif.Scraper())
@@ -44,16 +40,12 @@ class GUI(xbmcgui.WindowXML):
         self.default_aspect = aspect_ratios[aspect_ratio_id]
         self.setSource()
         self.showAlbums()
+        self.setFocus(self.getControl(self.CONTROL_MAIN_IMAGE))
 
     def onFocus(self, controlId):
         pass
 
     def onAction(self, action):
-        if action in self.ACTION_ANYKEY:
-            self.toggleHelp('false')
-        else:
-            #print action.getId()
-            pass
         if action in self.ACTION_SHOW_INFO:
             self.toggleInfo()
         elif action in self.ACTION_CONTEXT_MENU:
@@ -80,7 +72,6 @@ class GUI(xbmcgui.WindowXML):
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
-            self.toggleHelp('true')
             if self.getProperty('type') == 'album':
                 self.showPhotos()
             elif self.getProperty('type') == 'photo':
@@ -114,13 +105,6 @@ class GUI(xbmcgui.WindowXML):
             selectedControl.getListItem(i).setProperty('aspectratio',
                                                        self.default_aspect)
 
-    def toggleHelp(self, show):
-        selectedControl = self.getControl(self.CONTROL_USAGE_TEXT)
-        if show == 'false':
-            self.getControl(self.CONTROL_USAGE_TEXT).setVisible(False)
-        elif show == 'true':
-            self.getControl(self.CONTROL_USAGE_TEXT).setVisible(True)
-
     def download(self):
         # get writable directory
         downloadPath = xbmcgui.Dialog().browse(3, ' '.join([getLS(32020),
@@ -140,21 +124,13 @@ class GUI(xbmcgui.WindowXML):
                 pDialog.close()
                 imageDownloader.Download(photos, downloadPath)
 
-    def showPhotos(self):  # the order is significant!
-        control = self.getControl(self.CONTROL_USAGE_TEXT)
-        control.setText('\n'.join([getLS(32030),
-                                   getLS(32031),
-                                   getLS(32032)]))
+    def showPhotos(self):
         link = self.getProperty('link')
         photos = self.Source.getPhotos(link)
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         self.showItems(photos, 'photo')
 
     def showAlbums(self):
-        control = self.getControl(self.CONTROL_USAGE_TEXT)
-        control.setText('\n'.join([getLS(32040),
-                                   getLS(32041),
-                                   getLS(32042)]))
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         albums = self.Source.getAlbums()
         self.showItems(albums, 'album')
