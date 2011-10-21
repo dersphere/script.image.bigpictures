@@ -1,5 +1,4 @@
 from scraper import ScraperPlugin
-from BeautifulSoup import BeautifulSoup
 
 
 class Scraper(ScraperPlugin):

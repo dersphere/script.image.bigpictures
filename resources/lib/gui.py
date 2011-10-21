@@ -135,8 +135,8 @@ class GUI(xbmcgui.WindowXML):
 
     def showPhotos(self):
         link = self.getProperty('link')
-        photos = self.Source.getPhotos(link)
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
+        photos = self.Source.getPhotos(link)
         self.showItems(photos, 'photo')
 
     def showAlbums(self):

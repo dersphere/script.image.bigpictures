@@ -1,6 +1,5 @@
 from scraper import ScraperPlugin
 import re
-from BeautifulSoup import BeautifulSoup
 
 
 class Scraper(ScraperPlugin):
