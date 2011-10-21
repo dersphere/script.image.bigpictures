@@ -19,7 +19,7 @@ class GUI(xbmcgui.WindowXML):
     # Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
-    ACTION_PREVIOUS_MENU = [9]
+    ACTION_PREVIOUS_MENU = [9, 92]
     ACTION_SHOW_INFO = [11]
     ACTION_EXIT_SCRIPT = [10, 13]
     ACTION_DOWN = [4]
