@@ -56,3 +56,8 @@ class Scraper(ScraperParent):
                                 'pic': pic,
                                 'description': description})
         return self.photos
+
+
+def register():
+    return Scraper()
+
