@@ -42,3 +42,8 @@ class Scraper(ScraperParent):
         if tree.find('a', 'nav_next'):
             self.getPhotos(tree.find('a', 'nav_next')['href'], append=True)
         return self.photos
+
+
+def register():
+    return Scraper()
+
