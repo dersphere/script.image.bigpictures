@@ -1,14 +1,14 @@
-from parent import ScraperParent
+from scraper import ScraperPlugin
 from BeautifulSoup import BeautifulSoup
 
 
-class Scraper(ScraperParent):
+class Scraper(ScraperPlugin):
 
     NAME = 'Wallstreetjournal: The Photo Journal'
 
     def getAlbums(self):
-        u = 'http://blogs.wsj.com/photojournal/'
-        tree = BeautifulSoup(self.getCachedURL(u))
+        url = 'http://blogs.wsj.com/photojournal/'
+        tree = self.getCachedTree(url)
         self.albums = list()
         storyNodes = tree.findAll('li',
                                   'postitem imageFormat-P')
@@ -29,7 +29,7 @@ class Scraper(ScraperParent):
         return self.albums
 
     def getPhotos(self, url, append=False):
-        tree = BeautifulSoup(self.getCachedURL(url))
+        tree = self.getCachedTree(url)
         title = tree.find('div',
                           'articleHeadlineBox headlineType-newswire').h1.string
         if not append:

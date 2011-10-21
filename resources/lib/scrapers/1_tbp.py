@@ -1,14 +1,14 @@
-from parent import ScraperParent
+from scraper import ScraperPlugin
 import re
 from BeautifulSoup import BeautifulSoup
 
 
-class Scraper(ScraperParent):
+class Scraper(ScraperPlugin):
 
     NAME = 'Boston.com: The Big Picture'
 
     def getFilters(self, url):
-        tree = BeautifulSoup(self.getCachedURL(url))
+        tree = self.getCachedTree(url)
         self.months = list()
         self.categories = list()
         optionNodes = tree.findAll('option', value=re.compile('.+?'))
@@ -20,7 +20,7 @@ class Scraper(ScraperParent):
 
     def getAlbums(self):
         url = 'http://www.boston.com/bigpicture/'
-        tree = BeautifulSoup(self.getCachedURL(url))
+        tree = self.getCachedTree(url)
         self.albums = list()
         storyNodes = tree.findAll('div', 'headDiv2')
         for node in storyNodes:
@@ -41,7 +41,7 @@ class Scraper(ScraperParent):
 
     def getPhotos(self, url):
         referer = 'http://www.boston.com/bigpicture/'
-        tree = BeautifulSoup(self.getCachedURL(url, referer))
+        tree = self.getCachedTree(url, referer)
         title = tree.find('div', 'headDiv2').h2.a.string
         self.photos = list()
         photoNodes = tree.findAll('div', {'class':
