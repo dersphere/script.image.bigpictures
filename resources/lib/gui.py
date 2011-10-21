@@ -30,13 +30,13 @@ class GUI(xbmcgui.WindowXML):
         self.getScraper()
 
     def getScraper(self):
-        addon_path = Addon.getAddonInfo('path')
-        scrapers_path = os.path.join(addon_path, 'resources', 'lib',
-                                     'scrapers')
-        scraper_path = xbmc.translatePath(scrapers_path)
-        scrapers = [f[:-3] for f in os.listdir(scraper_path) \
+        addon_path = xbmc.translatePath(Addon.getAddonInfo('path'))
+        res_path = os.path.join(addon_path, 'resources', 'lib')
+        scrapers_path = os.path.join(res_path, 'scrapers')
+        scrapers = [f[:-3] for f in os.listdir(scrapers_path) \
                    if f.endswith('.py') and f != 'parent.py']
-        sys.path.append(scraper_path)
+        sys.path.append(res_path)
+        sys.path.append(scrapers_path)
         imported_modules = [__import__(scraper) for scraper in scrapers]
         self.SOURCES = [m.register() for m in imported_modules]
 
