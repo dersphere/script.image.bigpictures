@@ -7,7 +7,7 @@ class Scraper(ScraperParent):
     NAME = 'Wallstreetjournal: The Photo Journal'
 
     def getAlbums(self):
-        u = 'http://blogs.wsj.com/photojournal/category/pictures-of-the-week/'
+        u = 'http://blogs.wsj.com/photojournal/'
         tree = BeautifulSoup(self.getCachedURL(u))
         self.albums = list()
         storyNodes = tree.findAll('li',
