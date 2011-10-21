@@ -45,4 +45,3 @@ class Scraper(ScraperPlugin):
 
 def register():
     return Scraper()
-
