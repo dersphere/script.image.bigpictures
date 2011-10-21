@@ -13,15 +13,19 @@ class Scraper(ScraperParent):
         storyNodes = tree.findAll('li',
                                   'postitem imageFormat-P')
         for node in storyNodes:
-            title = self.cleanHTML(node.find('h2').a.string)
-            link = node.find('h2').a['href']
-            content_raw = node.findAll('div', attrs={'class': 'postContent'})
-            description = self.cleanHTML(content_raw[1].p)
-            pic = node.find('img')['src'].strip()
-            self.albums.append({'title': title,
-                                'pic': pic,
-                                'description': description,
-                                'link': link})
+            try:
+                title = self.cleanHTML(node.find('h2').a.string)
+                link = node.find('h2').a['href']
+                content_raw = node.findAll('div', attrs={'class':
+                                                         'postContent'})
+                description = self.cleanHTML(content_raw[1].p)
+                pic = node.find('img')['src'].strip()
+                self.albums.append({'title': title,
+                                    'pic': pic,
+                                    'description': description,
+                                    'link': link})
+            except:
+                pass
         return self.albums
 
     def getPhotos(self, url, append=False):
