@@ -1,5 +1,4 @@
 from scraper import ScraperPlugin
-from BeautifulSoup import BeautifulSoup
 
 
 class Scraper(ScraperPlugin):
@@ -10,7 +9,8 @@ class Scraper(ScraperPlugin):
         url = 'http://blogs.sacbee.com/photos/'
         tree = self.getCachedTree(url)
         self.albums = list()
-        storyNodes = tree.findAll('div', 'entry-asset asset hnews hentry story')
+        storyNodes = tree.findAll('div',
+                                  'entry-asset asset hnews hentry story')
         for node in storyNodes:
             title = node.find('a').string
             link = node.find('a')['href']
