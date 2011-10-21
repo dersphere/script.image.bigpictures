@@ -34,12 +34,11 @@ class GUI(xbmcgui.WindowXML):
         res_path = os.path.join(addon_path, 'resources', 'lib')
         scrapers_path = os.path.join(res_path, 'scrapers')
         scrapers = [f[:-3] for f in os.listdir(scrapers_path) \
-                   if f.endswith('.py') and f != 'parent.py']
+                    if f.endswith('.py')]
         sys.path.append(res_path)
         sys.path.append(scrapers_path)
         imported_modules = [__import__(scraper) for scraper in scrapers]
         self.SOURCES = [m.register() for m in imported_modules]
-
 
     def onInit(self):
         self.show_info = 'true'
