@@ -37,11 +37,14 @@ class Scraper(ScraperPlugin):
         subtree.extract()
         photoNodes = subtree.findAll('p')
         for node in photoNodes:
-            pic = node.img['src'].strip()
-            description = self.cleanHTML(node.contents)
-            self.photos.append({'title': title,
-                                'pic': pic,
-                                'description': description})
+            try:
+                pic = node.img['src'].strip()
+                description = self.cleanHTML(node.contents)
+                self.photos.append({'title': self.cleanHTML(title),
+                                    'pic': pic,
+                                    'description': description})
+            except:
+                pass
         if tree.find('a', 'nav_next'):
             self.getPhotos(tree.find('a', 'nav_next')['href'], append=True)
         return self.photos

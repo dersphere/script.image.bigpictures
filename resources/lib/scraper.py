@@ -66,6 +66,7 @@ class ScraperPlugin(object):
         s = s.replace('&#39;', '\'')  # replace html-encoded double-quotes
         s = s.replace('&#8217;', '\'')  # replace html-encoded single-quotes
         s = s.replace('&#8221;', '"')  # replace html-encoded double-quotes
+        s = s.replace('&#8211;', '-')  # replace html-encoded double-quotes
         s = re.sub('# *$', '', s)  # remove hash at the end
         s = s.strip()
         return s
