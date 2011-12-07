@@ -49,7 +49,7 @@ class GUI(xbmcgui.WindowXML):
     def onInit(self):
         self.show_info = 'true'
         self.active_source_id = 0
-        aspect_ratio_id = int(getSetting('aspect_ratio'))
+        aspect_ratio_id = int(getSetting('aspect_ratio2'))
         aspect_ratios = ('scale', 'keep')
         self.default_aspect = aspect_ratios[aspect_ratio_id]
         self.setSource()
