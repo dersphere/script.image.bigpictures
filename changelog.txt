@@ -1,3 +1,9 @@
+2.0.3
+  Added: New Scraper "TotallyCoolPix.com"
+
+2.0.2
+  Fixed import error
+
 2.0.1
   New plugin-way for scrapers
   Fixed: Wallstreetjournal Scraper
