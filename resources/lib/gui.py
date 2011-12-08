@@ -16,6 +16,7 @@ openSettings = Addon.openSettings
 class GUI(xbmcgui.WindowXML):
     # Controls
     CONTROL_MAIN_IMAGE = 100
+    IMAGE_LOADING = 101
     # Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
@@ -140,15 +141,19 @@ class GUI(xbmcgui.WindowXML):
                 imageDownloader.Download(photos, downloadPath)
 
     def showPhotos(self):
+        self.getControl(self.IMAGE_LOADING).setVisible(True)
         link = self.getProperty('link')
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         photos = self.Source.getPhotos(link)
         self.showItems(photos, 'photo')
+        self.getControl(self.IMAGE_LOADING).setVisible(False)
 
     def showAlbums(self):
+        self.getControl(self.IMAGE_LOADING).setVisible(True)
         self.getControl(self.CONTROL_MAIN_IMAGE).reset()
         albums = self.Source.getAlbums()
         self.showItems(albums, 'album')
+        self.getControl(self.IMAGE_LOADING).setVisible(False)
 
     def showItems(self, itemSet, type):
         total = len(itemSet)

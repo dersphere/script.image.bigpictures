@@ -10,25 +10,13 @@
                 <height>720</height>
                 <texture>black.png</texture>
             </control>
-            <control type="image">
+            <control type="image" id="101">
                 <description>The spinning animation in the background</description>
                 <posx>607</posx>
                 <posy>327</posy>
                 <width>66</width>
                 <height>66</height>
                 <texture>loader.gif</texture>
-            </control>
-            <control type="label" id="102">
-                <description>"Loading may take a while"</description>
-                <posx>20</posx>
-                <posy>60</posy>
-                <width>1200</width>
-                <height>60</height>
-                <align>left</align>
-                <aligny>top</aligny>
-                <label>$LOCALIZE[SCRIPT32001]</label>
-                <textcolor>FFAAAAAA</textcolor>
-                <font>font13</font>
             </control>
             <control type="list" id="100">
                 <description>Main list of Images</description>
@@ -40,6 +28,14 @@
                 <orientation>horizontal</orientation>
                 <preloaditems>10</preloaditems>
                 <itemlayout width="1280" height="720">
+                    <control type="image">
+                        <description>The spinning animation in the background</description>
+                        <posx>607</posx>
+                        <posy>327</posy>
+                        <width>66</width>
+                        <height>66</height>
+                        <texture>loader.gif</texture>
+                    </control>
                     <control type="largeimage">
                         <description>The Picture in ratio scale</description>
                         <posx>0</posx>
@@ -103,6 +99,14 @@
                     </control>
                 </itemlayout>
                 <focusedlayout width="1280" height="720">
+                    <control type="image">
+                        <description>The spinning animation in the background</description>
+                        <posx>607</posx>
+                        <posy>327</posy>
+                        <width>66</width>
+                        <height>66</height>
+                        <texture>loader.gif</texture>
+                    </control>
                     <control type="largeimage">
                         <description>The Picture in ratio scale</description>
                         <posx>0</posx>
@@ -179,7 +183,7 @@
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="image">
-						<description>Arrow left</description>
+                        <description>Arrow left</description>
                         <animation type="Focus">
                             <effect type="slide" start="-50,0" end="0" time="100" delay="2000"/>
                             <effect type="fade" start="0" end="100" time="100" delay="2000"/>
@@ -193,7 +197,7 @@
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="image">
-						<description>Arrow right</description>
+                        <description>Arrow right</description>
                         <animation type="Focus">
                             <effect type="slide" start="50,0" end="0" time="100" delay="2000"/>
                             <effect type="fade" start="0" end="100" time="100" delay="2000"/>
