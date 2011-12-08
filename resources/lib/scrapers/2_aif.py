@@ -13,7 +13,7 @@ class Scraper(ScraperPlugin):
         storyNodes = tree.findAll('div', 'articleContent')
         imgNodes = tree.findAll('span', 'if1280')
         for i, node in enumerate(storyNodes):
-            title = node.find('a').string
+            title = self.cleanHTML(node.find('a').string)
             link = node.find('a')['href']
             desc_raw = node.find('div',
                                  attrs={'class': 'entry_body'}).p.contents
@@ -30,7 +30,7 @@ class Scraper(ScraperPlugin):
 
     def getPhotos(self, url):
         tree = self.getCachedTree(url)
-        title = tree.find('h1', 'headline').string
+        title = self.cleanHTML(tree.find('h1', 'headline').string)
         self.photos = list()
         photoNodes = tree.findAll('span', {'class': 'if1024'})
         for node in photoNodes:
