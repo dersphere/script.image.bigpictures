@@ -17,6 +17,7 @@ class GUI(xbmcgui.WindowXML):
     # Controls
     CONTROL_MAIN_IMAGE = 100
     IMAGE_LOADING = 101
+    LABEL_VISIBLE = 102
     # Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
@@ -48,7 +49,7 @@ class GUI(xbmcgui.WindowXML):
         self.SOURCES = [m.register() for m in imported_modules]
 
     def onInit(self):
-        self.show_info = 'true'
+        self.show_info = True
         self.active_source_id = 0
         aspect_ratio_id = int(getSetting('aspect_ratio2'))
         aspect_ratios = ('scale', 'keep')
@@ -99,17 +100,13 @@ class GUI(xbmcgui.WindowXML):
         return control.getSelectedItem().getProperty(property)
 
     def toggleInfo(self):
-        selectedControl = self.getControl(self.CONTROL_MAIN_IMAGE)
-        if self.getProperty('show_info') == 'false':
-            for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('show_info',
-                                                           'true')
-            self.show_info = 'true'
+        selectedControl = self.getControl(self.LABEL_VISIBLE)
+        if self.show_info:
+            selectedControl.setVisible(False)
+            self.show_info = False
         else:
-            for i in range(selectedControl.size()):
-                selectedControl.getListItem(i).setProperty('show_info',
-                                                           'false')
-            self.show_info = 'false'
+            selectedControl.setVisible(True)
+            self.show_info = True
 
     def toggleAspect(self):
         selectedControl = self.getControl(self.CONTROL_MAIN_IMAGE)
@@ -158,7 +155,6 @@ class GUI(xbmcgui.WindowXML):
     def showItems(self, itemSet, type):
         total = len(itemSet)
         for i, item in enumerate(itemSet):
-            item['show_info'] = self.show_info
             item['type'] = type
             item['album'] = self.Source.NAME
             item['title'] = item['title']

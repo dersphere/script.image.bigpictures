@@ -10,6 +10,13 @@
                 <height>720</height>
                 <texture>black.png</texture>
             </control>
+			<control type="label" id="102">
+                <description>Visibility-Placeholder</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>0</width>
+                <height>0</height>
+            </control>
             <control type="image" id="101">
                 <description>The spinning animation in the background</description>
                 <posx>607</posx>
@@ -68,7 +75,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Property(Album)]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                     </control>
                     <control type="label">
@@ -81,7 +88,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                     </control>
                     <control type="label">
@@ -94,7 +101,7 @@
                         <aligny>center</aligny>
                         <label>($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                     </control>
                 </itemlayout>
@@ -137,7 +144,7 @@
                         <height>64</height>
                         <texture border="0,0,20,0">HeaderBack.png</texture>
                         <colordiffuse>AAFFFFFF</colordiffuse>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="label">
@@ -150,7 +157,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Property(Album)]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -164,7 +171,7 @@
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -178,7 +185,7 @@
                         <aligny>center</aligny>
                         <label>($INFO[ListItem.Property(duration)])</label>
                         <textcolor>FFDDDDDD</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <font>font13</font>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
@@ -220,7 +227,7 @@
                         <width>1280</width>
                         <height>270</height>
                         <texture>DescriptionBack.png</texture>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                     <control type="textbox">
@@ -239,7 +246,7 @@
                         <wrapmultiline>true</wrapmultiline>
                         <label>$INFO[ListItem.Label2]</label>
                         <textcolor>white</textcolor>
-                        <visible>ListItem.Property(show_info)</visible>
+                        <visible>Control.IsVisible(102)</visible>
                         <animation effect="fade" time="200">VisibleChange</animation>
                     </control>
                 </focusedlayout>
