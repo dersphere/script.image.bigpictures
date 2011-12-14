@@ -38,17 +38,13 @@ class Scraper(ScraperPlugin):
         for node in nodes:
             pic = re.search(pic_regex, node).group(1).replace('\/', '/')
             ugly_title = re.search(title_regex, node).group(1)
-            try:
-                title = self.cleanHTML(ugly_title.decode('unicode-escape'))
-            except:
-                print 'title skipped!'
-                title = self.cleanHTML(ugly_title)
-            ugly_desc = re.search(desc_regex, node).group(1).replace('\\r\\n', '[CR]')
-            try:
-                description = self.cleanHTML(ugly_desc.decode('unicode-escape'))
-            except:
-                print 'desc skipped!'
-                description = self.cleanHTML(ugly_desc)
+            if ugly_title.endswith('\\'):  # fix python bug
+                ugly_title = ugly_title[:-1]
+            title = ugly_title.decode('unicode-escape')
+            ugly_desc = re.search(desc_regex, node).group(1)
+            if ugly_desc.endswith('\\'):  # fix python bug
+                ugly_desc = ugly_desc[:-1]
+            description = ugly_desc.decode('unicode-escape')
             self.photos.append({'title': title,
                                 'pic': pic,
                                 'description': description})
