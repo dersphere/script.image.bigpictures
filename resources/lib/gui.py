@@ -27,6 +27,7 @@ class GUI(xbmcgui.WindowXML):
     ACTION_DOWN = [4]
     ACTION_UP = [3]
     ACTION_0 = [58]
+    ACTION_PLAY = [79]
 
     def __init__(self, xmlFilename, scriptPath, defaultSkin, defaultRes):
         self.getScraper()
@@ -86,6 +87,8 @@ class GUI(xbmcgui.WindowXML):
             self.showAlbums()
         elif action in self.ACTION_0:
             self.toggleAspect()
+        elif action in self.ACTION_PLAY:
+            self.startSlideshow()
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
@@ -136,6 +139,20 @@ class GUI(xbmcgui.WindowXML):
                 pDialog.update(100)
                 pDialog.close()
                 imageDownloader.Download(photos, downloadPath)
+
+    def startSlideshow(self):
+        if self.getProperty('type') == 'photo':
+            return
+        link = self.getProperty('link')
+        photos = self.Source.getPhotos(link)
+        items = list()
+        for photo in photos:
+            items.append('{"file":"%s"}' % photo['pic'])
+        item_list = '[%s]' % ','.join(items)
+        xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Playlist.Add",'
+                            '"params":{"playlistid":2,"item":%s}}' % item_list)
+        xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Player.Open",'
+                            '"params":{"item":{"playlistid":2}}}')
 
     def showPhotos(self):
         self.getControl(self.IMAGE_LOADING).setVisible(True)
