@@ -21,12 +21,12 @@ class GUI(xbmcgui.WindowXML):
     # Actions
     ACTION_CONTEXT_MENU = [117]
     ACTION_MENU = [122]
-    ACTION_PREVIOUS_MENU = [9, 92]
+    ACTION_PREVIOUS_MENU = [9, 92, 10]
     ACTION_SHOW_INFO = [11]
-    ACTION_EXIT_SCRIPT = [10, 13]
+    ACTION_EXIT_SCRIPT = [13]
     ACTION_DOWN = [4]
     ACTION_UP = [3]
-    ACTION_0 = [58]
+    ACTION_0 = [58, 18]
     ACTION_PLAY = [79]
 
     def __init__(self, xmlFilename, scriptPath, defaultSkin, defaultRes):
