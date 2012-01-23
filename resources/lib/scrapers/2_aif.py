@@ -10,18 +10,17 @@ class Scraper(ScraperPlugin):
         url = 'http://www.theatlantic.com/infocus/'
         tree = self.getCachedTree(url)
         self.albums = list()
-        storyNodes = tree.findAll('div', 'articleContent')
-        imgNodes = tree.findAll('span', 'if1280')
-        for i, node in enumerate(storyNodes):
-            title = self.cleanHTML(node.find('a').string)
-            link = node.find('a')['href']
-            desc_raw = node.find('div',
-                                 attrs={'class': 'entry_body'}).p.contents
+        section = tree.find('div', attrs={'class': 'middle'})
+        
+        headlines = section.findAll('h1', attrs={'class': 'headline'})
+        descriptions = section.findAll('div', attrs={'class': 'dek'})
+        images = section.findAll('span', 'if1280')
+        for i, node in enumerate(headlines):
+            title = self.cleanHTML(node.a.string)
+            link = headlines[i].a['href']
+            desc_raw = descriptions[i].p.contents
             description = self.cleanHTML(desc_raw)
-            try:
-                pic = imgNodes[i].find('img')['src']
-            except:
-                pic = ''
+            pic = images[i].find('img')['src']
             self.albums.append({'title': title,
                                 'pic': pic,
                                 'description': description,
@@ -45,3 +44,5 @@ class Scraper(ScraperPlugin):
 
 def register():
     return Scraper()
+
+    

@@ -34,27 +34,20 @@ class GUI(xbmcgui.WindowXML):
 
     def getScraper(self):
         addon_path = xbmc.translatePath(Addon.getAddonInfo('path'))
-        print 'TBP: addon_path: %s' % repr(addon_path)
         res_path = os.path.join(addon_path, 'resources', 'lib')
-        print 'TBP: res_path: %s' % repr(res_path)
         scrapers_path = os.path.join(res_path, 'scrapers')
-        print 'TBP: scrapers_path: %s' % repr(scrapers_path)
         scrapers = [f[:-3] for f in os.listdir(scrapers_path) \
                     if f.endswith('.py')]
-        print 'TBP: scrapers: %s' % repr(scrapers)
         sys.path.insert(0, res_path)
         sys.path.insert(0, scrapers_path)
-        print 'TBP: path: %s' % repr(sys.path)
         imported_modules = [__import__(scraper) for scraper in scrapers]
-        print 'TBP: imported_modules: %s' % repr(imported_modules)
         self.SOURCES = [m.register() for m in imported_modules]
 
     def onInit(self):
         self.show_info = True
         self.active_source_id = 0
         aspect_ratio_id = int(getSetting('aspect_ratio2'))
-        aspect_ratios = ('scale', 'keep')
-        self.default_aspect = aspect_ratios[aspect_ratio_id]
+        self.default_aspect = ('scale', 'keep')[aspect_ratio_id]
         self.setSource()
         self.showAlbums()
         self.setFocus(self.getControl(self.CONTROL_MAIN_IMAGE))
@@ -88,7 +81,7 @@ class GUI(xbmcgui.WindowXML):
         elif action in self.ACTION_0:
             self.toggleAspect()
         elif action in self.ACTION_PLAY:
-            self.startSlideshow()
+            pass
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
@@ -139,27 +132,6 @@ class GUI(xbmcgui.WindowXML):
                 pDialog.update(100)
                 pDialog.close()
                 imageDownloader.Download(photos, downloadPath)
-
-    def startSlideshow(self):
-        return
-        if self.getProperty('type') == 'photo':
-            return
-        link = self.getProperty('link')
-        photos = self.Source.getPhotos(link)
-        items = list()
-        for photo in photos:
-            items.append('{"file":"%s"}' % photo['pic'])
-            i = '{"file":"%s"}' % photo['pic']
-            break
-        item_list = '[%s]' % ','.join(items)
-        s = ('{"jsonrpc":"2.0","id":1,"method":"Playlist.Add",'
-             '"params":{"playlistid":2,"item":%s}}' % i)
-        print s
-        print xbmc.executeJSONRPC(s)
-        s = ('{"jsonrpc":"2.0","id":1,"method":"Player.Open",'
-             '"params":{"item":{"playlistid":2}}}')
-        print s
-        print xbmc.executeJSONRPC(s)
 
     def showPhotos(self):
         self.getControl(self.IMAGE_LOADING).setVisible(True)

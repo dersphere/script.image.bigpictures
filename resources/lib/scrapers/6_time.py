@@ -36,18 +36,21 @@ class Scraper(ScraperPlugin):
         desc_regex = re.compile('"post_content":"(.*?)"')
         title_regex = re.compile('"post_title":"(.*?)"')
         for node in nodes:
-            pic = re.search(pic_regex, node).group(1).replace('\/', '/')
-            ugly_title = re.search(title_regex, node).group(1)
-            if ugly_title.endswith('\\'):  # fix python bug
-                ugly_title = ugly_title[:-1]
-            title = ugly_title.decode('unicode-escape')
-            ugly_desc = re.search(desc_regex, node).group(1)
-            if ugly_desc.endswith('\\'):  # fix python bug
-                ugly_desc = ugly_desc[:-1]
-            description = ugly_desc.decode('unicode-escape')
-            self.photos.append({'title': title,
-                                'pic': pic,
-                                'description': description})
+            try:
+                pic = re.search(pic_regex, node).group(1).replace('\/', '/')
+                ugly_title = re.search(title_regex, node).group(1)
+                if ugly_title.endswith('\\'):  # fix python bug
+                    ugly_title = ugly_title[:-1]
+                title = ugly_title.decode('unicode-escape')
+                ugly_desc = re.search(desc_regex, node).group(1)
+                if ugly_desc.endswith('\\'):  # fix python bug
+                    ugly_desc = ugly_desc[:-1]
+                description = ugly_desc.decode('unicode-escape')
+                self.photos.append({'title': title,
+                                    'pic': pic,
+                                    'description': description})
+            except:
+                pass
         return self.photos
 
 
