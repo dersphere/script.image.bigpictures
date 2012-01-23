@@ -6,7 +6,6 @@
   Changed: The spinning loading animation logic
   Fixed: ATV2-Remote Keymaps
 
-
 2.0.2
   Fixed import error
 
