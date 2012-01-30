@@ -24,7 +24,7 @@ def get_sources():
 
 def get_albums(source_id):
     sources = get_sources()
-    source = sources[int(source_id)]
+    source = sources[source_id]
     print source
     albums = source.getAlbums()
     return [{'title': album['title'],
@@ -34,9 +34,9 @@ def get_albums(source_id):
 
 def get_photos(source_id, album_id):
     sources = get_sources()
-    source = sources[int(source_id)]
+    source = sources[source_id]
     albums = source.getAlbums()
-    album_url = albums[int(album_id) - 1]['link']
+    album_url = albums[album_id]['link']
     photos = source.getPhotos(album_url)
     return [{'title': str(i + 1),
              'pic': photo['pic']} for i, photo in enumerate(photos)]
@@ -72,8 +72,10 @@ def __get_params():
 
 def run():
     p = __get_params()
+    source_id = int(p['source'])
     if p['mode'] == 'photos':
-        pass
+        album_id = int(p['album'])
+        show_photos(source_id, album_id)
     elif p['mode'] == 'albums':
-        show_albums(p['source'])
+        show_albums(source_id)
     xbmcplugin.endOfDirectory(handle)
