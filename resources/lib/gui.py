@@ -1,5 +1,6 @@
 import sys
 import os
+from urllib import urlencode
 
 import xbmcgui
 import imageDownloader
@@ -81,7 +82,19 @@ class GUI(xbmcgui.WindowXML):
         elif action in self.ACTION_0:
             self.toggleAspect()
         elif action in self.ACTION_PLAY:
-            pass
+            self.startSlideshow()
+
+    def startSlideshow(self):
+        params = {}
+        if self.getProperty('type') == 'photo':
+            params['mode'] = 'photos'
+            d = self.getProperty('duration')
+            params['album'] = int(d.split('/')[0]) - 1
+        else:
+            params['mode'] = 'albums'
+        params['source'] = self.active_source_id
+        xbmc.executebuiltin('Slideshow(plugin://script.image.bigpictures/?%s)'
+                            % urlencode(params))
 
     def onClick(self, controlId):
         if controlId == self.CONTROL_MAIN_IMAGE:
