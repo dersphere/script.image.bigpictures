@@ -1,81 +1,114 @@
-from urlparse import parse_qs
-import sys
 import os
+import sys
+import urlparse
+import urllib
 
 import xbmc
 import xbmcgui
 import xbmcplugin
 
-handle = int(sys.argv[1])
-Addon = sys.modules['__main__'].Addon
+from addon import Addon, log, SCRAPERS_PATH
+from resources.lib.scrapers.scraper import ScraperManager
 
 
-def get_sources():
-    addon_path = xbmc.translatePath(Addon.getAddonInfo('path'))
-    res_path = os.path.join(addon_path, 'resources', 'lib')
-    scrapers_path = os.path.join(res_path, 'scrapers')
-    scrapers = [f[:-3] for f in os.listdir(scrapers_path) \
-                if f.endswith('.py')]
-    sys.path.insert(0, res_path)
-    sys.path.insert(0, scrapers_path)
-    imported_modules = [__import__(scraper) for scraper in scrapers]
-    return [m.register() for m in imported_modules]
+def get_scrapers():
+    log('plugin.get_scrapers started')
+    manager = get_scraper_manager()
+    scrapers = manager.get_scrapers()
+    return [{'title': scraper['title'],
+             'pic': '',
+             'id': scraper['id']} for scraper in scrapers]
 
 
-def get_albums(source_id):
-    sources = get_sources()
-    source = sources[source_id]
-    print source
-    albums = source.getAlbums()
+def get_albums(scraper_id):
+    log('plugin.get_albums started with scraper_id=%s' % scraper_id)
+    manager = get_scraper_manager()
+    manager.switch_to_given_id(scraper_id)
+    albums = manager.get_albums()
     return [{'title': album['title'],
              'pic': album['pic'],
-             'id': str(i + 1)} for i, album in enumerate(albums)]
+             'id': album['album_url']} for album in albums]
 
 
-def get_photos(source_id, album_id):
-    sources = get_sources()
-    source = sources[source_id]
-    albums = source.getAlbums()
-    album_url = albums[album_id]['link']
-    photos = source.getPhotos(album_url)
-    return [{'title': str(i + 1),
-             'pic': photo['pic']} for i, photo in enumerate(photos)]
+def get_photos(scraper_id, album_url):
+    log('plugin.get_photos started with scraper_id=%s, album_url=%s'
+        % (scraper_id, album_url))
+    manager = get_scraper_manager()
+    manager.switch_to_given_id(scraper_id)
+    photos = manager.get_photos(album_url)
+    return [{'title': photo['title'],
+             'pic': photo['pic']} for photo in photos]
 
 
-def show_albums(source_id):
-    albums = get_albums(source_id)
+def show_scrapers():
+    log('plugin.show_scrapers started')
+    scrapers = get_scrapers()
+    for scraper in scrapers:
+        liz = xbmcgui.ListItem(scraper['title'], iconImage='DefaultImage.png',
+                               thumbnailImage='DefaultFolder.png')
+        params = {'mode': 'albums',
+                  'scraper_id': scraper['id']}
+        url = 'plugin://%s/?%s' % (Addon.getAddonInfo('id'),
+                                   urllib.urlencode(params))
+        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url,
+                                    listitem=liz, isFolder=True)
+    log('plugin.show_scrapers finished')
+
+
+def show_albums(scraper_id):
+    log('plugin.show_albums started with scraper_id=%s' % scraper_id)
+    albums = get_albums(scraper_id)
     for album in albums:
         liz = xbmcgui.ListItem(album['title'], iconImage='DefaultImage.png',
                                thumbnailImage=album['pic'])
         liz.setInfo(type='image', infoLabels={'Title': album['title']})
-        xbmcplugin.addDirectoryItem(handle=handle, url=album['pic'],
-                                    listitem=liz, isFolder=False)
+        params = {'mode': 'photos',
+                  'scraper_id': scraper_id,
+                  'album_url': album['id']}
+        url = 'plugin://%s/?%s' % (Addon.getAddonInfo('id'),
+                                   urllib.urlencode(params))
+        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url,
+                                    listitem=liz, isFolder=True)
+    log('plugin.show_albums finished')
 
 
-def show_photos(source_id, album_id):
-    photos = get_photos(source_id, album_id)
+def show_photos(scraper_id, album_url):
+    log('plugin.show_photos started with scraper_id=%s, album_url=%s'
+        % (scraper_id, album_url))
+    photos = get_photos(scraper_id, album_url)
     for photo in photos:
         liz = xbmcgui.ListItem(photo['title'], iconImage='DefaultImage.png',
                                thumbnailImage=photo['pic'])
         liz.setInfo(type='image', infoLabels={'Title': photo['title']})
-        xbmcplugin.addDirectoryItem(handle=handle, url=photo['pic'],
+        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=photo['pic'],
                                     listitem=liz, isFolder=False)
 
 
-def __get_params():
+def decode_params():
     params = {}
-    p = parse_qs(sys.argv[2][1:])
+    p = urlparse.parse_qs(sys.argv[2][1:])
     for key, value in p.iteritems():
         params[key] = value[0]
+    log('plugin.decode_params got params=%s' % params)
     return params
 
 
+def get_scraper_manager():
+    return ScraperManager(SCRAPERS_PATH)
+
+
 def run():
-    p = __get_params()
-    source_id = int(p['source'])
-    if p['mode'] == 'photos':
-        album_id = int(p['album'])
-        show_photos(source_id, album_id)
+    p = decode_params()
+    if not 'mode' in p:
+        log('plugin.run started in scrapers-mode')
+        show_scrapers()
     elif p['mode'] == 'albums':
-        show_albums(source_id)
-    xbmcplugin.endOfDirectory(handle)
+        scraper_id = int(p['scraper_id'])
+        log('plugin.run started in albums-mode')
+        show_albums(scraper_id)
+    elif p['mode'] == 'photos':
+        log('plugin.run started in photos-mode')
+        scraper_id = int(p['scraper_id'])
+        album_url = p['album_url']
+        show_photos(scraper_id, album_url)
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
