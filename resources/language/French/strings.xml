@@ -21,7 +21,7 @@
     <string id="32200">Aide</string>
     <string id="32201">Paramètres</string>
     <!-- Script strings -->
-    <string id="32300">Choirir le chemin de téléchargement par défaut</string>
+    <string id="32300">Choisir le chemin de téléchargement par défaut</string>
     <string id="32301">Récupération des données...</string>
     <string id="32302">Élément %d/%d</string>
     <string id="32303">Élément courant : %s %d%%</string>
