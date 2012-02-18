@@ -9,7 +9,8 @@
   Fixed: All unicode/entity problems
   Cosmetics: 100% pep8 (python styleguide) conformity
   Improved: Debug logging
-  
+  Added: French translation (thx to stombi)
+
 2.0.3
   Added: New Scraper "TotallyCoolPix.com"
   Added: New Scraper "Time.com: LightBox - Closeup"
