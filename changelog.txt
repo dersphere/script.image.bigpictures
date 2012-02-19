@@ -10,6 +10,7 @@
   Cosmetics: 100% pep8 (python styleguide) conformity
   Improved: Debug logging
   Added: French translation (thx to stombi)
+  Added: Dutch translation (thx to apeeters)
 
 2.0.3
   Added: New Scraper "TotallyCoolPix.com"
