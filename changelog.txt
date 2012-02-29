@@ -1,3 +1,6 @@
+3.0.3
+  Added Czech Translation (thx to Spike)
+
 3.0.2
   Fix for startup error (default->Default)
 
@@ -47,7 +50,7 @@
   Fixed: The Big Pictures remove Hash at the end of the Description
   Changed: The usage help is now replaced by a settings "help"-section
   Cosmetic: more pep8 conformity
-  
+
 1.4.2
   Fixed: Error with external Python and os.makedirs(cachedir) with cachedir = "special://..."
   Fixed TheSacramentoBee wasn't able to get Photos
@@ -85,7 +88,7 @@
   Added: New Scraper 'Sacramento Bee: The Frame'
   Changed: The Layout and content of the help texts
   Fixed: TBP-Scraper: Remove the image-number within the description text
-  Fixed: TBP-Scraper: removed #-sign at the end of the picture  
+  Fixed: TBP-Scraper: removed #-sign at the end of the picture
   Improved: Changes to the icon.png (more padding)
 
 1.2.0
@@ -93,6 +96,6 @@
   Added: German Translation
   Changed: Addon ported from plugin which called script to native script
   Added: New icon.png
-  
+
 1.1.2
   Released as plugin for camelot by rwparris2
