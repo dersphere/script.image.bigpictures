@@ -1,3 +1,6 @@
+3.0.2
+  Fix for startup error (default->Default)
+
 3.0.0
   Complete code rewrite
   Added: Slideshow feature (press play)
