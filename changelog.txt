@@ -1,4 +1,6 @@
 3.0.3
+  Fixed TheSacramentoBee
+  Fixed Time.com: LightBox 
   Added Czech Translation (thx to Spike)
 
 3.0.2
