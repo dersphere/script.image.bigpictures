@@ -34,23 +34,30 @@ addon_name = addon.getAddonInfo('name')
 
 class Downloader(object):
 
-    def __init__(self, photos, download_path):
-        self.len = len(photos)
-        self.log('__init__ with path=%s' % download_path)
+    def __init__(self, download_path):
+        self.log('__init__ with path="%s"' % download_path)
+        self.download_path = download_path
         self.pDialog = xbmcgui.DialogProgress()
-        self.pDialog.create(Addon.getAddonInfo('name'))
-        s = Addon.getLocalizedString(32301)  # Gathering Data...
-        self.pDialog.update(0, s)
+        self.pDialog.create(addon.getAddonInfo('name'))
+        self.pDialog.update(1, addon.getLocalizedString(32301))
+
+    def download(self, photos):
+        self.total_items = len(photos)
         album_title = photos[0]['album_title']
-        self.sub_folder = re.sub('[^\w\- ]', '', album_title).replace(' ', '_')
-        self.full_path = os.path.join(download_path, self.sub_folder)
-        self.log('using full_path="%s"' % self.full_path)
-        self.__create_folder(self.full_path)
+        album_title = re.sub('[^\w\- ]', '', album_title).replace(' ', '_')
+        full_path = os.path.join(self.download_path, album_title)
+        self.log('using full_path="%s"' % full_path)
+        line3 = addon.getLocalizedString(32304) % full_path
+        self.pDialog.update(2, '', '', line3)
+        if not os.path.isdir(full_path):
+            os.mkdir(full_path)
         for i, photo in enumerate(photos):
             self.current_item = i + 1
             url = photo['pic']
-            self.current_file = photo['pic'].split('/')[-1].split('?')[0]
-            filename = os.path.join(self.full_path, self.current_file)
+            self.current_file = '%d.%s' % (
+                self.current_item, url.rsplit('.', 1)[-1]
+            )
+            filename = os.path.join(full_path, self.current_file)
             self.log('Downloading "%s" to "%s"' % (url, filename))
             try:
                 urllib.urlretrieve(url, filename, self.update_progress)
@@ -62,22 +69,21 @@ class Downloader(object):
                 self.log('Canceled')
                 break
 
-    def update_progress(self, count, block_size, total_size):
-        percent = int(self.current_item * 100 / self.len)
-        item_percent = int(count * block_size * 100 / total_size)
-        line1 = Addon.getLocalizedString(32302) % (self.current_item,
-                                                   self.len)
-        line2 = Addon.getLocalizedString(32303) % (self.current_file,
-                                                   item_percent)
-        line3 = Addon.getLocalizedString(32304) % self.sub_folder
-        self.pDialog.update(percent, line1, line2, line3)
-
-    def __create_folder(self, full_path):
-        if not os.path.isdir(full_path):
-            os.mkdir(full_path)
+    def update_progress(self, block_count, block_size, item_size):
+        overall_percent = int(self.current_item * 100 / self.total_items)
+        item_percent = int(block_count * block_size * 100 / item_size)
+        line1 = addon.getLocalizedString(32302) % (
+            self.current_item,
+            self.total_items
+        )
+        line2 = addon.getLocalizedString(32303) % (
+            self.current_file,
+            item_percent
+        )
+        self.pDialog.update(overall_percent, line1, line2)
 
     def log(self, msg):
-        print u'TheBigPictures downloader: %s' % msg
+        print u'TheBigPictures Downloader: %s' % msg
 
     def __del__(self):
         self.pDialog.close()
@@ -241,9 +247,11 @@ class GUI(xbmcgui.WindowXML):
                 download_path = new_path
                 addon.setSetting('download_path', download_path)
         self.log('download_album using download_path="%s"' % download_path)
+        downloader = Downloader(download_path)
         album_url = self.getItemProperty('album_url')
         items = self.scraper_manager.get_photos(album_url)
-        downloader.Downloader(items, download_path)
+        downloader.download(items)
+        del downloader
         self.log('download_album finished')
 
     def showHelp(self):
