@@ -22,6 +22,7 @@ import re
 import sys
 import urllib
 
+import xbmc
 import xbmcaddon
 import xbmcgui
 
@@ -83,7 +84,7 @@ class Downloader(object):
         self.pDialog.update(overall_percent, line1, line2)
 
     def log(self, msg):
-        print u'TheBigPictures Downloader: %s' % msg
+        xbmc.log('TheBigPictures Downloader: %s' % msg)
 
     def __del__(self):
         self.pDialog.close()
@@ -259,7 +260,7 @@ class GUI(xbmcgui.WindowXML):
             addon.openSettings()
 
     def log(self, msg):
-        print u'TheBigPictures GUI: %s' % msg
+        xbmc.log('TheBigPictures GUI: %s' % msg)
 
 
 if __name__ == '__main__':

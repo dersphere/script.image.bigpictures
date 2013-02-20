@@ -20,6 +20,7 @@
 import sys
 import urlparse
 
+import xbmc
 import xbmcgui
 import xbmcplugin
 
@@ -54,7 +55,7 @@ def decode_params():
 
 
 def log(msg):
-    print u'TheBigPictures Plugin: %s' % msg
+    xbmc.log('TheBigPictures Plugin: %s' % msg)
 
 
 if __name__ == '__main__':
