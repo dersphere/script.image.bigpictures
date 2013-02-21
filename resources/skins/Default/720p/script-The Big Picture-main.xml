@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <window type="window">
     <controls>
+        <control type="image">
+            <description>Normal Default Background Image</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <aspectratio>scale</aspectratio>
+            <texture>bigpicture_hg.jpg</texture>
+        </control>
         <control type="label" id="104">
             <description>Arrows visibility-controller</description>
             <posx>0</posx>
@@ -40,6 +49,7 @@
             <height>720</height>
             <scrolltime tween="cubic" easing="inout">500</scrolltime>
             <animation effect="zoom" start="100" end="70" center="auto" time="400" tween="cubic" easing="inout" condition="stringcompare(Window.Property(Category),Album)">Conditional</animation>
+            <animation effect="slide" start="0" end="0,-60" center="auto" time="400" tween="cubic" easing="inout" condition="Control.IsVisible(102)">Conditional</animation>
             <orientation>horizontal</orientation>
             <preloaditems>2</preloaditems>
             <itemlayout width="1280" height="720">
@@ -98,12 +108,19 @@
                 <width>1280</width>
                 <height>64</height>
                 <texture border="0,0,20,0">HeaderBack.png</texture>
-                <colordiffuse>AAFFFFFF</colordiffuse>
+            </control>
+            <control type="image">
+                <description>Background for the Headline</description>
+                <posx>0</posx>
+                <posy>570</posy>
+                <width>1280</width>
+                <height>151</height>
+                <texture border="0,0,20,0">FooterBack.png</texture>
             </control>
             <control type="label">
                 <description>Label for source title</description>
                 <posx>20</posx>
-                <posy>10</posy>
+                <posy>15</posy>
                 <width>400</width>
                 <height>20</height>
                 <align>left</align>
@@ -114,21 +131,21 @@
             </control>
             <control type="label">
                 <description>Label for album or picture title</description>
-                <posx>420</posx>
-                <posy>10</posy>
+                <posx>230</posx>
+                <posy>15</posy>
                 <width>820</width>
                 <height>20</height>
-                <align>left</align>
+                <align>center</align>
                 <aligny>center</aligny>
                 <label>$INFO[Container(100).ListItem.Label]</label>
-                <textcolor>FFDDDDDD</textcolor>
+                <textcolor>FF4a92f7</textcolor>
                 <font>font13</font>
                 <scroll>true</scroll>
             </control>
             <control type="label">
                 <description>Label TYPE: (CurrentPage/NumPages)</description>
                 <posx>1260</posx>
-                <posy>10</posy>
+                <posy>15</posy>
                 <width>320</width>
                 <height>20</height>
                 <align>right</align>
@@ -140,8 +157,8 @@
             </control>
             <control type="image">
                 <description>Arrow left</description>
-                <posx>10</posx>
-                <posy>320</posy>
+                <posx>60</posx>
+                <posy>290</posy>
                 <width>80</width>
                 <height>80</height>
                 <texture>left.png</texture>
@@ -149,8 +166,8 @@
             </control>
             <control type="image">
                 <description>Arrow right</description>
-                <posx>1190</posx>
-                <posy>320</posy>
+                <posx>1140</posx>
+                <posy>290</posy>
                 <width>80</width>
                 <height>80</height>
                 <texture>right.png</texture>
@@ -164,20 +181,12 @@
                 <effect type="fade" start="0" end="100" time="100" delay="2000"/>
                 <effect type="fade" condition="VisibleChange" time="100" delay="2000"/>
             </animation>
-            <control type="image">
-                <description>Description background</description>
-                <posx>0</posx>
-                <posy>450</posy>
-                <width>1280</width>
-                <height>270</height>
-                <texture>DescriptionBack.png</texture>
-            </control>
             <control type="textbox">
                 <description>Description text</description>
                 <posx>20</posx>
-                <posy>560</posy>
-                <width>1240</width>
-                <height>145</height>
+                <posy>593</posy>
+                <width>1230</width>
+                <height>120</height>
                 <font>font28</font>
                 <align>left</align>
                 <aligny>top</aligny>
